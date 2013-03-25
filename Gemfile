@@ -21,9 +21,11 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'capybara', "~> 2.1.0.beta1"
   gem 'factory_girl_rails'
   gem 'guard-rspec'
+  gem 'guard-cucumber'
   gem 'database_cleaner'
   gem 'cucumber-rails', :require => false
 end
