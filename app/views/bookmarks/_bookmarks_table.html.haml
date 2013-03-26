@@ -1,0 +1,16 @@
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Site name
+      %th Description
+      %th Action
+    %tbody
+    - @bookmarks.each do |bookmark|
+      %tr
+        %td= link_to bookmark.title, "http://#{bookmark.url}", target: "_blank"
+        %td= bookmark.description
+        %td
+          = link_to "Edit", edit_bookmark_path(bookmark.id)
+          |
+          = link_to "Delete", bookmark, remote: true, method: :delete,
+            data: { confirm: "Are you sure?" }

@@ -1,17 +1,10 @@
 %h1.text-center Your Bookmarks
+= form_for :link, remote: true, html: { class: "form-inline" } do |f|
+  = f.label :link, "Add new bookmark..."
+  %br
+  .input-append
+    = f.url_field :link, class: "url_field"
+    = f.submit "Add bookmark", class: "btn btn-primary"
 = link_to "Create new bookmark", new_bookmark_path
-%table.table.table-striped.table-hover
-  %thead
-    %tr
-      %th Site name
-      %th Description
-      %th Action
-    %tbody
-    - @bookmarks.each do |bookmark|
-      %tr
-        %td= link_to bookmark.title, "http://#{bookmark.url}", target: "_blank"
-        %td= bookmark.description
-        %td
-          = link_to "Edit", edit_bookmark_path(bookmark.id)
-          |
-          = link_to "Delete", bookmark, method: :delete, data: { confirm: "Are you sure?" }
+#bookmarks_table
+  = render 'bookmarks_table', bookmarks: @bookmarks

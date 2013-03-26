@@ -8,6 +8,7 @@ gem 'rails', '~> 3.2.13'
 gem 'sqlite3'
 gem 'haml'
 gem 'bootstrap-sass'
+gem 'sanitize'
 
 group :development do
   gem 'annotate'

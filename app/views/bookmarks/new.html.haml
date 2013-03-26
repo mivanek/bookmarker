@@ -1,14 +1,16 @@
 .text-center
   %h1 Create a new bookmark
-= form_for @bookmark do |f|
-  .text-center
-    = f.label :title, "Bookmark title"
-    = f.text_field :title
+.row
+  .span6.offset3
+    = form_for @bookmark do |f|
+      -#.text-center
+      = f.label :title, "Bookmark title"
+      = f.text_field :title
 
-    = f.label :url, "Bookmark link"
-    = f.text_field :url
+      = f.label :url, "Bookmark link"
+      = f.text_field :url
 
-    = f.label :description, "Bookmark description"
-    = f.text_area :description
+      = f.label :description, "Bookmark description"
+      = f.text_area :description
 
-  = f.submit "Submit", class: "btn btn-large btn-primary"
+      = f.submit "Submit", class: "btn btn-large btn-primary"
