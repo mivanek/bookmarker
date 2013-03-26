@@ -1,2 +1,17 @@
-<h1>Bookmarks#index</h1>
-<p>Find me in app/views/bookmarks/index.html.erb</p>
+%h1.text-center Your Bookmarks
+= link_to "Create new bookmark", new_bookmark_path
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Site name
+      %th Description
+      %th Action
+    %tbody
+    - @bookmarks.each do |bookmark|
+      %tr
+        %td= link_to bookmark.title, "http://#{bookmark.url}", target: "_blank"
+        %td= bookmark.description
+        %td
+          = link_to "Edit", edit_bookmark_path(bookmark.id)
+          |
+          = link_to "Delete", bookmark, method: :delete, data: { confirm: "Are you sure?" }

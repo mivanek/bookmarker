@@ -1,6 +1,5 @@
 BookmarksProject::Application.routes.draw do
-  get "bookmarks/index"
-
+  resources :bookmarks
   root to: 'bookmarks#index'
 
   # The priority is based upon order of creation:
