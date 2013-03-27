@@ -1,4 +1,8 @@
+require 'parser'
+
 class BookmarksController < ApplicationController
+  include ElementsParser
+
   def index
     @bookmarks = Bookmark.all
   end
@@ -26,13 +30,13 @@ class BookmarksController < ApplicationController
   end
 
   def destroy
+    bookmark = Bookmark.find(params[:id])
+    success = bookmark.destroy
+    @bookmarks = Bookmark.all
     respond_to do |format|
-      if Bookmark.find(params[:id]).destroy
-        format.html do
-          flash[:notice] = "Bookmark deleted successfully."
-          redirect_to bookmarks_path
-        end
-        format.js { @bookmarks = Bookmark.all }
+      if success
+        format.html { redirect_to bookmarks_path, success: "Bookmark deleted successfully." }
+        format.js { @bookmarks }
       else
         format.html do
           flash[:error] = "Failed to delete bookmark."

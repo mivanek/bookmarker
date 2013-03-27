@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'haml'
 gem 'bootstrap-sass'
 gem 'sanitize'
+gem 'jquery-tools'
 
 group :development do
   gem 'annotate'
