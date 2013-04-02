@@ -7,7 +7,7 @@
     %tbody
     - @bookmarks.each do |bookmark|
       %tr
-        %td= link_to bookmark.title, "http://#{bookmark.url}", target: "_blank"
+        %td= link_to bookmark.title, url_checker(bookmark.url), target: "_blank"
         %td= bookmark.description
         %td
           = link_to "Edit", edit_bookmark_path(bookmark.id)

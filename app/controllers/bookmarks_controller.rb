@@ -1,7 +1,6 @@
 require 'parser'
 
 class BookmarksController < ApplicationController
-  include ElementsParser
 
   def index
     @bookmarks = Bookmark.all
@@ -15,7 +14,7 @@ class BookmarksController < ApplicationController
     respond_to do |format|
       if Bookmark.create(params[:bookmark])
         format.html do
-          flash[:success] = "Bookmark successfully created"
+          flash[:success] = "Bookmark successfully created."
           redirect_to bookmarks_path
         end
         format.js
@@ -31,12 +30,11 @@ class BookmarksController < ApplicationController
 
   def destroy
     bookmark = Bookmark.find(params[:id])
-    success = bookmark.destroy
-    @bookmarks = Bookmark.all
     respond_to do |format|
-      if success
-        format.html { redirect_to bookmarks_path, success: "Bookmark deleted successfully." }
-        format.js { @bookmarks }
+      if bookmark.destroy
+        format.html { redirect_to bookmarks_path,
+                      success: "Bookmark deleted successfully." }
+        format.js { @bookmarks = Bookmark.all }
       else
         format.html do
           flash[:error] = "Failed to delete bookmark."
@@ -50,4 +48,22 @@ class BookmarksController < ApplicationController
   def edit
     @bookmark = Bookmark.find(params[:id])
   end
+
+  def create_remote
+    title, description, url = parser.new(params[:link]).parse
+    respond_to do |format|
+      # TODO implementiraj provjeru url-a
+      if Bookmark.create(title: title, description: description, url: url)
+        format.js { @bookmarks = Bookmark.all }
+      else
+        format.js
+      end
+    end
+  end
+
+  private 
+
+    def parser
+      ElementsParser
+    end
 end
