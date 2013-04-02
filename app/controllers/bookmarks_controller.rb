@@ -34,7 +34,9 @@ class BookmarksController < ApplicationController
       if bookmark.destroy
         format.html { redirect_to bookmarks_path,
                       success: "Bookmark deleted successfully." }
-        format.js { @bookmarks = Bookmark.all }
+        format.js do
+          @bookmarks = Bookmark.all
+        end
       else
         format.html do
           flash[:error] = "Failed to delete bookmark."

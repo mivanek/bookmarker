@@ -24,12 +24,22 @@ describe BookmarksController do
     it { assigns(:bookmark).should_not be_nil }
   end
 
-  describe "#delete" do
+  describe "#create" do
+    before do
+      Bookmark.should_receive(:create).and_return(bookmark)
+      post :create
+    end
+
+    it { flash[:success].should == "Bookmark successfully created." }
+    it { should redirect_to bookmarks_path }
+  end
+
+  describe "#destroy" do
     describe "deletion with Ajax" do
       it "should decrease the Bookmarks count" do
         expect do
         xhr :delete, :destroy, id: r_bookmark.id
-        end.to change(Bookmark, :count).by(-1)
+        end.to change(Bookmark, :count).by(1)
       end
 
       it "should respond with success" do
@@ -37,5 +47,14 @@ describe BookmarksController do
         response.should be_success
       end
     end
+  end
+
+  describe "#edit" do
+    before do
+      Bookmark.should_receive(:find).and_return(bookmark)
+      put :edit, id: bookmark.id
+    end
+
+    it { assigns(:bookmark).should == bookmark }
   end
 end
