@@ -1,20 +1,14 @@
 class Bookmark < ActiveRecord::Base
   attr_accessible :description, :title, :url, :user_id
 
-  VALID_PROTOCOLS = ["http://", "https://", "ftp://"]
+  before_save { self.url.downcase }
+
+  VALID_PROTOCOLS = /^(http|https|ftp)\:\/\//i
 
   validates :title, presence: true
   validates :url, presence: true
   validates :description, presence: true
-  validate :url_validation
-
-  private
-
-    def url_validation
-      errors.add(:url, "can't be empty") and return if self.url.blank?
-      protocol = self.url.scan(/^\w+\:\/\//).first.downcase
-      unless VALID_PROTOCOLS.include? protocol
-        errors.add(:url, "is invalid (invalid protocol)")
-      end
-    end
+  validates :url, format: {
+    with: VALID_PROTOCOLS,
+    message: "The URL does not have a valid protocol." }
 end
