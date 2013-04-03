@@ -3,7 +3,8 @@
 .row
   .span6.offset3
     = form_for @bookmark do |f|
-      -#.text-center
+      = render 'shared/error_messages', object: f.object
+
       = f.label :title, "Bookmark title"
       = f.text_field :title
 

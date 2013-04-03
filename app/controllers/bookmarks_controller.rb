@@ -11,20 +11,12 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      if Bookmark.create(params[:bookmark])
-        format.html do
-          flash[:success] = "Bookmark successfully created."
-          redirect_to bookmarks_path
-        end
-        format.js
-      else
-        format.html do
-          flash[:error] = "Failed to create bookmark"
-          redirect_to bookmarks_path and return
-        end
-        format.js
-      end
+    @bookmark = Bookmark.new(params[:user])
+    if @bookmark.save
+      flash[:success] = "Bookmark successfully created."
+      redirect_to bookmarks_path
+    else
+      render 'new'
     end
   end
 
