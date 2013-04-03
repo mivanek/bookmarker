@@ -10,6 +10,7 @@ gem 'haml'
 gem 'bootstrap-sass'
 gem 'sanitize'
 gem 'jquery-tools'
+gem 'open_uri_redirections'
 
 group :development do
   gem 'annotate'

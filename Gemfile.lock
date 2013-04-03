@@ -117,6 +117,7 @@ GEM
     mime-types (1.22)
     multi_json (1.7.2)
     nokogiri (1.5.9)
+    open_uri_redirections (0.1.1)
     polyglot (0.3.3)
     pry (0.9.12)
       coderay (~> 1.0.5)
@@ -234,6 +235,7 @@ DEPENDENCIES
   haml
   jquery-rails
   jquery-tools
+  open_uri_redirections
   pry-doc
   pry-rails
   rails (~> 3.2.13)
