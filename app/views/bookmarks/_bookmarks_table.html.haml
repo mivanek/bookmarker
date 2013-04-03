@@ -1,14 +1,14 @@
 %table.table.table-striped.table-hover
   %thead
     %tr
-      %th Site name
+      %th.site-name Site name
       %th Description
-      %th Action
+      %th.table-edit Action
     %tbody
     - @bookmarks.each do |bookmark|
       %tr
-        %td= link_to bookmark.title, url_checker(bookmark.url), target: "_blank"
-        %td= bookmark.description
+        %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
+        %td= truncate(bookmark.description, length: 120)
         %td
           = link_to "Edit", edit_bookmark_path(bookmark.id)
           |
