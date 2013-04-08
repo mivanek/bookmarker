@@ -4,6 +4,9 @@ BookmarksProject::Application.routes.draw do
       post 'create_remote', as: 'create_remote'
     end
   end
+
+  resources :users
+
   root to: 'bookmarks#index'
 
   # The priority is based upon order of creation:
