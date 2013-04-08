@@ -1,0 +1,6 @@
+%h1.text-center Create a new user
+.row
+  .span6.offset3
+    = form_for @user do |f|
+      = render 'form', f: f
+      = f.submit "Create user", class: "btn btn-large btn-primary"
