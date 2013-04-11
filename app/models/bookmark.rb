@@ -3,6 +3,8 @@ class Bookmark < ActiveRecord::Base
 
   before_save { self.url.downcase }
 
+  belongs_to :user
+
   VALID_PROTOCOLS = /^(http|https|ftp)\:\/\//i
 
   default_scope order: 'bookmarks.created_at DESC'
@@ -13,4 +15,5 @@ class Bookmark < ActiveRecord::Base
   validates :url, format: {
     with: VALID_PROTOCOLS,
     message: "The URL does not have a valid protocol." }
+  validates :user_id, presence: true
 end

@@ -1,9 +1,10 @@
 require 'parser'
 
 class BookmarksController < ApplicationController
+  before_filter :signed_in_user
 
   def index
-    @bookmarks = Bookmark.all
+    @bookmarks = current_user.bookmarks
   end
 
   def new
@@ -11,7 +12,7 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    @bookmark = Bookmark.new(params[:user])
+    @bookmark = current_user.bookmarks.build(params[:bookmark])
     if @bookmark.save
       flash[:success] = "Bookmark successfully created."
       redirect_to bookmarks_path
@@ -39,16 +40,34 @@ class BookmarksController < ApplicationController
     end
   end
 
+  def update
+    bookmark = Bookmark.find(params[:id])
+    if bookmark.update_attributes(params[:bookmark])
+      respond_to do |format|
+        format.js { @bookmarks = current_user.bookmarks }
+        format.html do
+          flash[:success] = "Article successfully updated."
+          redirect_to bookmarks_path
+        end
+      end
+    end
+  end
+
   def edit
     @bookmark = Bookmark.find(params[:id])
+    respond_to do |format|
+      format.js { @bookmark }
+      format.html { @bookmark }
+    end
   end
 
   def create_remote
     title, description, url = parser.new(params[:link]).parse
+    bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
     respond_to do |format|
       # TODO implementiraj provjeru url-a
-      if Bookmark.create(title: title, description: description, url: url)
-        format.js { @bookmarks = Bookmark.all }
+      if bookmark.save
+        format.js { @bookmarks = current_user.bookmarks }
       else
         format.js
       end

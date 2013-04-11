@@ -1,7 +1,6 @@
 %h1.text-center Your Bookmarks
 = form_tag create_remote_bookmarks_path, remote: true,
   class: 'form-inline' do
-  = label_tag 'bookmarks', 'Add new bookmark...'
   %br
   .input-append
     = url_field_tag 'link', nil, class: 'url_field', autofocus: true
@@ -11,3 +10,5 @@
 
 #bookmarks_table
   = render 'bookmarks_table', bookmarks: @bookmarks
+
+= render 'edit_modal'

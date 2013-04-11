@@ -2,16 +2,4 @@
   %h1 Create a new bookmark
 .row
   .span6.offset3
-    = form_for @bookmark do |f|
-      = render 'shared/error_messages', object: f.object
-
-      = f.label :title, "Bookmark title"
-      = f.text_field :title
-
-      = f.label :url, "Bookmark link"
-      = f.text_field :url
-
-      = f.label :description, "Bookmark description"
-      = f.text_area :description
-
-      = f.submit "Submit", class: "btn btn-large btn-primary"
+    = render 'form', bookmark: @bookmark

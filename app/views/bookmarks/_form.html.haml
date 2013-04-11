@@ -1,0 +1,13 @@
+= form_for bookmark, remote: true do |f|
+  = render 'shared/error_messages', object: f.object
+
+  = f.label :title, "Bookmark title"
+  = f.text_field :title
+
+  = f.label :url, "Bookmark link"
+  = f.text_field :url
+
+  = f.label :description, "Bookmark description"
+  = f.text_area :description, rows: "10"
+
+  = f.submit "Submit", class: "btn btn-large btn-primary", remote: true
