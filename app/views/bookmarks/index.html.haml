@@ -5,8 +5,10 @@
   .input-append
     = url_field_tag 'link', nil, class: 'url_field', autofocus: true
     = tag(:input, type: 'submit', class: "btn btn-primary",
-      value: "Add bookmarks...")
-  %span.pull-right= link_to "Create a new bookmark manually", new_bookmark_path
+      value: "Add bookmark...")
+.btn-group.pull-right
+  = link_to "Add new folder...", '#', class: 'btn'
+  = link_to "Add bookmark (manual)", '#', class: "btn"
 
 #bookmarks_table
   = render 'bookmarks_table', bookmarks: @bookmarks
