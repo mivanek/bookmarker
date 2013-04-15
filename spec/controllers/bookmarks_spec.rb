@@ -2,13 +2,15 @@ require 'spec_helper'
 
 describe BookmarksController do
 
-  let(:r_bookmark) { FactoryGirl.create(:bookmark) }
   let(:bookmark){ mock_model(Bookmark).as_null_object }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:r_bookmark) { FactoryGirl.create(:bookmark, user_id: user.id) }
   subject { page }
+  before { @controller.stub(:signed_in_user).and_return(true) }
 
   describe "#index" do
     before do
-      Bookmark.should_receive(:all).and_return(bookmark)
+      @controller.stub(:current_user).and_return(user)
       get :index 
     end
 
@@ -26,8 +28,8 @@ describe BookmarksController do
 
   describe "#create" do
     before do
-      Bookmark.should_receive(:create).and_return(bookmark)
-      post :create
+      @controller.stub(:current_user).and_return(user)
+      post :create, bookmark: r_bookmark.attributes.except("id", "created_at", "updated_at")
     end
 
     it { flash[:success].should == "Bookmark successfully created." }

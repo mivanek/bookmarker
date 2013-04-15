@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe Bookmark do
+  let(:user) { FactoryGirl.create(:user) }
+
   before do
     @bookmark = Bookmark.new(title: "bookmark.com", description: "A test bookmark",
-                             url: "http://www.bookmark.com")
+                             url: "http://www.bookmark.com", user_id: user.id )
   end
 
   subject { @bookmark }

@@ -46,7 +46,7 @@ class BookmarksController < ApplicationController
       respond_to do |format|
         format.js { @bookmarks = current_user.bookmarks }
         format.html do
-          flash[:success] = "Article successfully updated."
+          flash[:success] = "Bookmark successfully updated."
           redirect_to bookmarks_path
         end
       end
@@ -69,6 +69,7 @@ class BookmarksController < ApplicationController
       if bookmark.save
         format.js { @bookmarks = current_user.bookmarks }
       else
+        binding.pry
         format.js
       end
     end

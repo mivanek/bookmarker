@@ -5,7 +5,6 @@ gem 'rails', '~> 3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'haml'
 gem 'bootstrap-sass'
 gem 'sanitize'
@@ -14,6 +13,7 @@ gem 'open_uri_redirections'
 gem 'bcrypt-ruby'
 
 group :development do
+  gem 'sqlite3'
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -22,6 +22,10 @@ group :development do
   gem 'guard-spork'
   gem 'spork-rails'
   gem 'rb-inotify', '~> 0.9'
+end
+
+group :production do
+  gem 'pg'
 end
 
 group :test do

@@ -16,4 +16,5 @@ class Bookmark < ActiveRecord::Base
     with: VALID_PROTOCOLS,
     message: "The URL does not have a valid protocol." }
   validates :user_id, presence: true
+
 end

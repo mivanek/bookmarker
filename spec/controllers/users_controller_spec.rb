@@ -28,6 +28,7 @@ describe UsersController do
       it { response.should redirect_to(bookmarks_path) }
       it { flash[:success].should == "Welcome to Bookmarks Application" }
     end
+
     context "failed to create user" do
       before do
         user.should_receive(:save).and_return(false)
