@@ -7,6 +7,7 @@
     = tag(:input, type: 'submit', class: "btn btn-primary",
       value: "Add bookmark...")
 .btn-group.pull-right
+  = link_to 'Folders...', href: '#', class: 'btn dropdown-toggle', data: { toggle: "dropdown" }
   = link_to "Add new folder...", '#', class: 'btn'
   = link_to "Add bookmark (manual)", '#', class: "btn"
 
