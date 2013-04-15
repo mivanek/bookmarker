@@ -1,4 +1,7 @@
 BookmarksProject::Application.routes.draw do
+
+  resources :folders, except: [:index]
+
   resources :bookmarks do
     collection do
       post 'create_remote', as: 'create_remote'
