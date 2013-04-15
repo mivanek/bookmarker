@@ -3,7 +3,8 @@ class Bookmark < ActiveRecord::Base
 
   before_save { self.url.downcase }
 
-  belongs_to :user
+  has_many :users, through: :folders
+  has_many :folders
 
   VALID_PROTOCOLS = /^(http|https|ftp)\:\/\//i
 
