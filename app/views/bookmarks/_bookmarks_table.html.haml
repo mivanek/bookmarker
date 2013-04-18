@@ -1,4 +1,4 @@
-%table.table.table-striped.table-hover
+%table.table.table-striped.table-hover.table-condensed
   %thead
     %tr
       %th.site-name Site name
@@ -7,7 +7,7 @@
     %tbody
     - @bookmarks.each do |bookmark|
       %tr{ id: bookmark.id }
-        %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
+        %td{ class: (:uvuci if bookmark.id.odd?) }= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
         %td= truncate(bookmark.description, length: 120)
         %td
           = link_to "Edit", edit_bookmark_path(bookmark), remote: true, data: { toggle: "modal", target: "#edit-modal" }
