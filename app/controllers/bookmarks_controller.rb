@@ -28,7 +28,7 @@ class BookmarksController < ApplicationController
         format.html { redirect_to bookmarks_path,
                       success: "Bookmark deleted successfully." }
         format.js do
-          @bookmarks = Bookmark.all
+          @bookmarks = current_user.bookmarks
         end
       else
         format.html do
