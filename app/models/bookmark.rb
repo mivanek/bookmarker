@@ -8,7 +8,7 @@ class Bookmark < ActiveRecord::Base
 
   VALID_PROTOCOLS = /^(http|https|ftp)\:\/\//i
 
-  default_scope order: 'bookmarks.created_at DESC'
+  default_scope order: 'sequence'
 
   validates :title, presence: true
   validates :url, presence: true

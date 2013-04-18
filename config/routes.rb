@@ -5,6 +5,7 @@ BookmarksProject::Application.routes.draw do
   resources :bookmarks do
     collection do
       post 'create_remote', as: 'create_remote'
+      post 'reorder'
     end
   end
 

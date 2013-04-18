@@ -75,6 +75,20 @@ class BookmarksController < ApplicationController
     end
   end
 
+  def reorder
+    @bookmark_ids = params[:bookmarks]
+    n = 0
+    ActiveRecord::Base.transaction do
+      @bookmark_ids.each do |id|
+        category = Bookmark.find(id)
+        category.sequence = n
+        n += 1
+        category.save
+      end
+    end
+    render :json => {}
+  end
+
   private 
 
     def parser
