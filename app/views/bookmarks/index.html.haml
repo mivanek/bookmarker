@@ -19,8 +19,7 @@
       %li= link_to "Delete folder", '#'
   = link_to "Add bookmark (manual)", '#', class: "btn"
 
-#bookmarks_table
-  = render 'bookmarks_table', bookmarks: @bookmarks
+= render 'bookmarks_table', bookmarks: @bookmarks
 
 = render 'edit_modal'
 
