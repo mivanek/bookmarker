@@ -12,12 +12,19 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    @bookmark = current_user.bookmarks.build(params[:bookmark])
-    if @bookmark.save
-      flash[:success] = "Bookmark successfully created."
-      redirect_to bookmarks_path
-    else
-      render 'new'
+    respond_to do |format|
+      format.js do
+        create_remote(params[:link]) and return
+      end
+      format.html do
+        @bookmark = current_user.bookmarks.build(params[:bookmark])
+        if @bookmark.save
+          flash[:success] = "Bookmark successfully created."
+          redirect_to bookmarks_path
+        else
+          render 'new'
+        end
+      end
     end
   end
 
@@ -61,15 +68,14 @@ class BookmarksController < ApplicationController
     end
   end
 
-  def create_remote
-    title, description, url = parser.new(params[:link]).parse
+  def create_remote(link)
+    title, description, url = parser.new(link).parse
     bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
     respond_to do |format|
       # TODO implementiraj provjeru url-a
       if bookmark.save
-        format.js { @bookmarks = current_user.bookmarks }
+        format.js { @bookmarks = current_user.bookmarks and return}
       else
-        binding.pry
         format.js
       end
     end

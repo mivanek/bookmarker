@@ -1,5 +1,5 @@
 %h1.text-center Your Bookmarks
-= form_tag create_remote_bookmarks_path, remote: true,
+= form_tag bookmarks_path, method: :post, remote: true,
   class: 'form-inline' do
   %br
   .input-append
