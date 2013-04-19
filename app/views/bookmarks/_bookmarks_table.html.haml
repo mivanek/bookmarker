@@ -10,7 +10,8 @@
         %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
         %td= truncate(bookmark.description, length: 120)
         %td
-          = link_to "Edit", edit_bookmark_path(bookmark), remote: true, data: { toggle: "modal", target: "#edit-modal" }
+          = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
+            data: { toggle: "modal", target: "#edit-modal" }
           |
           = link_to "Delete", bookmark, remote: true, method: :delete,
             data: { confirm: "Are you sure?" }

@@ -4,6 +4,7 @@ class BookmarksController < ApplicationController
   before_filter :signed_in_user
 
   def index
+    @folders = current_user.folders
     @bookmarks = current_user.bookmarks
   end
 
@@ -68,18 +69,6 @@ class BookmarksController < ApplicationController
     end
   end
 
-  def create_remote(link)
-    title, description, url = parser.new(link).parse
-    bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
-    respond_to do |format|
-      # TODO implementiraj provjeru url-a
-      if bookmark.save
-        format.js { @bookmarks = current_user.bookmarks and return}
-      else
-        format.js
-      end
-    end
-  end
 
   def reorder
     @bookmark_ids = params[:bookmarks]
@@ -96,6 +85,19 @@ class BookmarksController < ApplicationController
   end
 
   private 
+
+    def create_remote(link)
+      title, description, url = parser.new(link).parse
+      bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
+      respond_to do |format|
+        # TODO implementiraj provjeru url-a
+        if bookmark.save
+          format.js { @bookmarks = current_user.bookmarks and return}
+        else
+          format.js
+        end
+      end
+    end
 
     def parser
       ElementsParser

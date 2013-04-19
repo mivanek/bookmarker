@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true
 
   after_create :populate_with_default_bookmarks
+  after_create :create_default_folder
 
 
   def populate_with_default_bookmarks
@@ -27,6 +28,11 @@ class User < ActiveRecord::Base
                            url: url)
       bookmark.save
     end
+  end
+
+  def create_default_folder
+    folder = self.folders.build(name: "no_folder")
+    folder.save
   end
 
   private
