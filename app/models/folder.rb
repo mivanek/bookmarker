@@ -10,8 +10,13 @@ class Folder < ActiveRecord::Base
 
     def add_sequence
       if self.sequence.nil?
-        last_sequence = Folder.order(:sequence).last.sequence
-        self.sequence = 1 + (last_sequence.nil? ? 0 : last_sequence)
+        folder = Folder.order(:sequence).last
+        if folder
+          last_sequence = folder.sequence
+          self.sequence = 1 + (last_sequence.nil? ? 0 : last_sequence)
+        else
+          self.sequence = 1
+        end
       end
     end
 end
