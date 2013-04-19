@@ -1,12 +1,28 @@
 #bookmarks_table
-  %table.table.table-striped.table-hover
+  %table.table.table-hover.table-condensed
     %thead
       %tr
         %th.site-name Site name
         %th Description
         %th.table-edit Action
       %tbody
-      - @bookmarks.each do |bookmark|
+      - @folders.where('name <> ?', 'no_folder').each do |folder|
+        %tr{ id: folder.id }
+          %td= folder.name
+          %td
+          %td
+        - folder.bookmarks.each do |bookmark|
+          %tr{ id: bookmark.id }
+            %td.bookmark-offset= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
+            %td= truncate(bookmark.description, length: 120)
+            %td
+              = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
+                data: { toggle: "modal", target: "#edit-modal" }
+              |
+              = link_to "Delete", bookmark, remote: true, method: :delete,
+                data: { confirm: "Are you sure?" }
+
+      - @bookmarks.where('folder_id <> ?', Folder.find_by_name('no_folder').id).each do |bookmark|
         %tr{ id: bookmark.id }
           %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
           %td= truncate(bookmark.description, length: 120)

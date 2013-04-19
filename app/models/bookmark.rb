@@ -1,5 +1,5 @@
 class Bookmark < ActiveRecord::Base
-  attr_accessible :description, :title, :url, :user_id
+  attr_accessible :description, :title, :url, :user_id, :folder_id
 
   before_save { self.url.downcase }
   #before_save :add_sequence
