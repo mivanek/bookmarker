@@ -1,5 +1,16 @@
 class FoldersController < ApplicationController
   def new
+    @folder = Folder.new
+  end
+
+  def create
+    @folder = current_user.folders.build(params[:folder])
+    if @folder.save
+      flash[:success] = "Bookmarks successfully created."
+      redirect_to bookmarks_path
+    else
+      render 'new'
+    end
   end
 
   def destroy
@@ -12,8 +23,5 @@ class FoldersController < ApplicationController
   end
 
   def show
-  end
-
-  def create
   end
 end
