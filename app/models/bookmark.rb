@@ -5,7 +5,7 @@ class Bookmark < ActiveRecord::Base
   #before_save :add_sequence
 
   belongs_to :users
-  has_one :folder
+  belongs_to :folder
 
   VALID_PROTOCOLS = /^(http|https|ftp)\:\/\//i
 
