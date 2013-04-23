@@ -4,6 +4,8 @@ class Folder < ActiveRecord::Base
   belongs_to :user
   has_many :bookmarks
 
+  default_scope order: 'sequence'
+
   before_save :add_sequence
 
   private
