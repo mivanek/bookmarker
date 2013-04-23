@@ -1,5 +1,5 @@
 class Folder < ActiveRecord::Base
-  attr_accessible :name, :user_id
+  attr_accessible :name, :user_id, :sequence
 
   belongs_to :user
   has_many :bookmarks
@@ -7,6 +7,10 @@ class Folder < ActiveRecord::Base
   default_scope order: 'sequence'
 
   before_save :add_sequence
+
+  validates :sequence, presence: true
+  validates :name, presence: true
+  validates :user_id, presence: true
 
   private
 

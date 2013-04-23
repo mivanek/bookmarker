@@ -8,6 +8,7 @@ describe "Authentication", :type => :feature do
 
     describe "with invalid information" do
       let(:user) { FactoryGirl.create(:user) }
+      let!(:folder) { FactoryGirl.create(:folder, user_id: user.id) }
       before { click_button "Sign in" }
 
       it { should have_selector('h1', text: 'Sign in') }
@@ -21,6 +22,7 @@ describe "Authentication", :type => :feature do
     end
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
+      let!(:folder) { FactoryGirl.create(:folder, user_id: user.id) }
       before { sign_in user }
 
       it { should have_selector('h1', text: 'Your Bookmarks') }
@@ -34,7 +36,6 @@ describe "Authentication", :type => :feature do
 
       describe "submitting to the create action" do
         before { post users_path }
-        specify { response.should redirect_to(bookmarks_path) }
         it { should have_selector('h1', text: "Your Bookmarks") }
       end
     end

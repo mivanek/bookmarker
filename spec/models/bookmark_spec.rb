@@ -14,6 +14,7 @@ describe Bookmark do
   it { should respond_to(:url) }
   it { should respond_to(:description) }
   it { should respond_to(:user_id) }
+  it { should respond_to(:sequence) }
 
   it { should be_valid }
 
@@ -22,11 +23,6 @@ describe Bookmark do
       @bookmark.title = title
       should_not be_valid
     end
-  end
-
-  describe "the description should not be empty" do
-    before { @bookmark.description = " " }
-    it { should_not be_valid }
   end
 
   describe "with invalid url" do

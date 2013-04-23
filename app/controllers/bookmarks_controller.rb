@@ -31,19 +31,14 @@ class BookmarksController < ApplicationController
 
   def destroy
     bookmark = Bookmark.find(params[:id])
+    bookmark.destroy
     respond_to do |format|
-      if bookmark.destroy
-        format.html { redirect_to bookmarks_path,
-                      success: "Bookmark deleted successfully." }
-        format.js do
-          @bookmarks = current_user.bookmarks
-        end
-      else
-        format.html do
-          flash[:error] = "Failed to delete bookmark."
-          redirect_to bookmarks_path and return
-        end
-        format.js
+      format.html do
+        flash[:success] = "Bookmark deleted successfully."
+        redirect_to bookmarks_path
+      end
+      format.js do
+        @bookmarks = current_user.bookmarks
       end
     end
   end

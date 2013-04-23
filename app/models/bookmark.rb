@@ -1,5 +1,5 @@
 class Bookmark < ActiveRecord::Base
-  attr_accessible :description, :title, :url, :user_id, :folder_id
+  attr_accessible :description, :title, :url, :user_id, :folder_id, :sequence
 
   before_save { self.url.downcase }
   #before_save :add_sequence
@@ -13,7 +13,6 @@ class Bookmark < ActiveRecord::Base
 
   validates :title, presence: true
   validates :url, presence: true
-  validates :description, presence: true
   validates :url, format: {
     with: VALID_PROTOCOLS,
     message: "The URL does not have a valid protocol." }
