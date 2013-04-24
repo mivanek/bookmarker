@@ -5,8 +5,6 @@ describe BookmarksController do
   let(:bookmark){ mock_model(Bookmark).as_null_object }
   let(:user) { FactoryGirl.create(:user) }
   let!(:r_bookmark) { FactoryGirl.create(:bookmark, user_id: user.id) }
-  #let(:user) { User.find(r_bookmark.user_id) }
-  #subject { page }
   before { @controller.stub(:signed_in_user).and_return(true) }
 
   describe "#index" do
@@ -84,7 +82,7 @@ describe BookmarksController do
   describe "#edit" do
     before do
       Bookmark.should_receive(:find).and_return(bookmark)
-      put :edit, id: bookmark.id
+      get :edit, id: bookmark.id
     end
 
     it { assigns(:bookmark).should == bookmark }

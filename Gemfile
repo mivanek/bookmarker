@@ -19,9 +19,6 @@ group :development do
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'pry-doc'
-  gem 'guard-spork'
-  gem 'spork-rails'
-  gem 'rb-inotify', '~> 0.9'
 end
 
 group :production do
@@ -33,14 +30,18 @@ group :test do
   gem 'selenium-webdriver'
   gem 'capybara', "~> 2.1.0.beta1"
   gem 'factory_girl_rails'
-  gem 'guard-rspec'
   gem 'guard-cucumber'
   gem 'database_cleaner'
   gem 'cucumber-rails', :require => false
+  gem 'rb-inotify', '~> 0.9'
+  gem 'libnotify', '0.8.0'
 end
 
 group :development, :test do
+  gem 'guard-spork'
+  gem 'spork-rails'
   gem 'rspec-rails'
+  gem 'guard-rspec'
   gem 'jasmine'
 end
 
