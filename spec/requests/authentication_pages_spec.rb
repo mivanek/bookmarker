@@ -44,6 +44,15 @@ describe "Authentication", :type => :feature do
         it { should have_link('Sign in') }
       end
     end
+
+    describe "persisted signin" do
+      let(:user) { FactoryGirl.create(:user) }
+      let!(:folder) { FactoryGirl.create(:folder, user_id: user.id) }
+      before { persisted_sign_in user }
+
+      it { should have_link('Sign out', href: signout_path) }
+      it { should have_selector('h1', text: 'Your Bookmarks') }
+    end
   end
 
   describe "authorization" do

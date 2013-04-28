@@ -8,6 +8,8 @@ describe Bookmark do
                              url: "http://www.bookmark.com", user_id: user.id )
   end
 
+  let(:blank) { ["", " ", nil] }
+
   subject { @bookmark }
 
   it { should respond_to(:title) }
@@ -19,9 +21,23 @@ describe Bookmark do
   it { should be_valid }
 
   it "the title should not be empty" do
-    [""," ",nil].each do |title|
+    blank.each do |title|
       @bookmark.title = title
       should_not be_valid
+    end
+  end
+
+  it "the url should not be empty" do
+    blank.each do |url|
+      @bookmark.url = url
+      should_not be_valid
+    end
+  end
+
+  it "user_id should be present" do
+    blank.each do |user_id|
+      @bookmark.user_id = user_id
+      should_not be_nil
     end
   end
 
@@ -43,5 +59,23 @@ describe Bookmark do
         should be_valid
       end
     end
+  end
+
+  describe "the sequence should not be blank" do
+    before do
+      @bookmark.save
+    end
+    it { @bookmark.sequence.should_not be_blank }
+  end
+
+  describe "new bookmark should have sequence of 1" do
+    before do
+      @other_bookmark = @bookmark.dup
+      @other_bookmark.save
+      @bookmark.save
+    end
+
+    it { @bookmark.sequence.should == 1 }
+    it { @other_bookmark.reload.sequence.should == 2 }
   end
 end

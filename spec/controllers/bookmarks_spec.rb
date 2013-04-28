@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe BookmarksController do
 
-  let(:bookmark){ mock_model(Bookmark).as_null_object }
+  let(:bookmark){ mock_model(Bookmark, title: "Test title", description: "test",
+                            url: "http://www.test.com").as_null_object }
   let(:user) { FactoryGirl.create(:user) }
   let!(:r_bookmark) { FactoryGirl.create(:bookmark, user_id: user.id) }
   before { @controller.stub(:signed_in_user).and_return(true) }
@@ -29,13 +30,16 @@ describe BookmarksController do
     before(:each){ @controller.stub(:current_user).and_return(user) }
 
     describe "HTML create" do
-      before do
-        post :create, bookmark: r_bookmark.attributes.except("id", "created_at", "updated_at")
-      end
+      context "successfull create" do
+        before do
+          post :create, bookmark: r_bookmark.attributes.except("id", "created_at", "updated_at")
+        end
 
-      it { flash[:success].should == "Bookmark successfully created." }
-      it { should redirect_to bookmarks_path }
+        it { flash[:success].should == "Bookmark successfully created." }
+        it { should redirect_to bookmarks_path }
+      end
     end
+
 
     describe "AJAX create" do
       it "should increase the bookmark count" do
@@ -86,5 +90,33 @@ describe BookmarksController do
     end
 
     it { assigns(:bookmark).should == bookmark }
+  end
+
+  describe "#update" do
+
+    before { @controller.stub(:current_user).and_return(user) }
+
+    describe "AJAX update" do
+      before do
+        @bookmark = r_bookmark
+        @bookmark.save
+        @bookmark.title = "updated name"
+        xhr :put, :update, id: @bookmark.id,
+          bookmark: @bookmark.attributes.except("id", "updated_at", "created_at")
+      end
+
+      it { @bookmark.reload.title.should == "updated name" }
+    end
+
+    describe "HTML update" do
+      before do
+        Bookmark.should_receive(:find).and_return(r_bookmark)
+        put :update, id: r_bookmark.id,
+          bookmark: r_bookmark.attributes.except("id", "updated_at", "created_at")
+      end
+
+      it { flash[:success].should == "Bookmark successfully updated." }
+      it { should redirect_to bookmarks_path }
+    end
   end
 end

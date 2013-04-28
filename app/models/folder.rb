@@ -6,9 +6,8 @@ class Folder < ActiveRecord::Base
 
   default_scope order: 'sequence'
 
-  before_save :add_sequence
+  before_save :add_sequence, if: 'new_record?'
 
-  validates :sequence, presence: true
   validates :name, presence: true
   validates :user_id, presence: true
 

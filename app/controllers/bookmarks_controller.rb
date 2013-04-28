@@ -18,8 +18,8 @@ class BookmarksController < ApplicationController
         create_remote(params[:link]) and return
       end
       format.html do
-        @bookmark = current_user.bookmarks.build(params[:bookmark])
-        if @bookmark.save
+        bookmark = current_user.bookmarks.build(params[:bookmark])
+        if bookmark.save
           flash[:success] = "Bookmark successfully created."
           redirect_to bookmarks_path
         else
@@ -38,6 +38,7 @@ class BookmarksController < ApplicationController
         redirect_to bookmarks_path
       end
       format.js do
+        @folders = current_user.folders
         @bookmarks = current_user.bookmarks
       end
     end
@@ -47,7 +48,10 @@ class BookmarksController < ApplicationController
     bookmark = Bookmark.find(params[:id])
     if bookmark.update_attributes(params[:bookmark])
       respond_to do |format|
-        format.js { @bookmarks = current_user.bookmarks }
+        format.js do
+          @bookmarks = current_user.bookmarks
+          @folders = current_user.folders
+        end
         format.html do
           flash[:success] = "Bookmark successfully updated."
           redirect_to bookmarks_path
@@ -70,31 +74,27 @@ class BookmarksController < ApplicationController
     n = 0
     ActiveRecord::Base.transaction do
       @bookmark_ids.each do |id|
-        category = Bookmark.find(id)
-        category.sequence = n
+        bookmark = Bookmark.find(id)
+        bookmark.sequence = n
         n += 1
-        category.save
+        bookmark.save
       end
     end
     render :json => {}
   end
 
-  private 
+  private
 
     def create_remote(link)
-      title, description, url = parser.new(link).parse
+      title, description, url = parser(link).parse
       bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
-      respond_to do |format|
-        # TODO implementiraj provjeru url-a
-        if bookmark.save
-          format.js { @bookmarks = current_user.bookmarks and return}
-        else
-          format.js
-        end
+      if bookmark.save
+        @folders = current_user.folders
+        @bookmarks = current_user.bookmarks
       end
     end
 
-    def parser
-      ElementsParser
+    def parser(link)
+      ElementsParser.new(link)
     end
 end
