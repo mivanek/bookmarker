@@ -73,6 +73,10 @@ input {
   display: inline;
 }
 
-.bookmark-offset {
+.foldered-bookmark > td:first-child {
   padding-left: 20px !important;
+}
+
+.hovered-folder {
+  color: #F00;
 }

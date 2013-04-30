@@ -17,12 +17,55 @@
 //= require_tree .
 
 $(window).load(function () {
+  var dropped = false;
+  var draggable_sibling;
+
+  // let folder be droppable
+  $('.folder, .foldered-bookmark').droppable({
+    accept: '.bookmark, .foldered-bookmark',
+    hoverClass: 'hovered-folder',
+    drop: function(event, ui) {
+      if($(ui.draggable).hasClass("bookmark")) {
+        $(ui.draggable).removeClass("bookmark").addClass("foldered-bookmark");
+        var id = $(ui.draggable).attr('id').replace(/bookmark-/, '');
+        $(ui.draggable).attr('id', "foldered-bookmark-"+id);
+        $('#bookmark_table tbody').sortable("refresh");
+      }
+    }
+  });
+
+  $('.bookmark').droppable({
+    accept: '.foldered-bookmark',
+    hoverClass: 'hovered-folder',
+    drop: function(event, ui) {
+      if ($(ui.draggable).hasClass("foldered-bookmark")) {
+        $(ui.draggable).removeClass("foldered-bookmark").addClass("bookmark");
+        var id = $(ui.draggable).attr('id').replace(/foldered-bookmark-/, '');
+        $(ui.draggable).attr('id', 'bookmark-'+id);
+      }
+    }
+  });
+
   $('#bookmarks_table tbody').sortable({
-    update: function(event, ui){
-      var bookmark_id = $("#bookmarks_table tbody").last().sortable('toArray');
-      var pobj = {bookmarks: bookmark_id};
-      console.log(pobj);
+    axis: "y",
+    opacity: 0.6,
+    stop: function(event, ui){
+      var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
+      var pobj = {element_ids: element_ids};
+
       $.post("/bookmarks/reorder", pobj);
     }
   });
+
+
+  $('.folder > tr:first').accordion({
+    collapsible: true
+  });
 });
+
+
+    //accept: function(d) {
+      //if(d.hasClass("foldered-bookmark")||d.hasClass("bookmark")) {
+        //return true;
+      //}
+    //}

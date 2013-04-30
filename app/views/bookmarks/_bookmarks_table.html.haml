@@ -6,29 +6,30 @@
         %th Description
         %th.table-edit Action
       %tbody
-      - @folders.where('name <> ?', 'no_folder').each do |folder|
-        %tr{ id: folder.id }
-          %td= folder.name
-          %td
-          %td
-        - folder.bookmarks.each do |bookmark|
-          %tr{ id: bookmark.id }
-            %td.bookmark-offset= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
-            %td= truncate(bookmark.description, length: 120)
+        - @folders.where('name <> ?', 'no_folder').each do |folder|
+          %tr{ id: "folder-#{folder.id}", class: "folder" }
+            %td= folder.name
             %td
-              = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
-                data: { toggle: "modal", target: "#edit-modal" }
-              |
-              = link_to "Delete", bookmark, remote: true, method: :delete,
-                data: { confirm: "Are you sure?" }
+            %td
+          - folder.bookmarks.each do |bookmark|
+            %tr{ id: "foldered-bookmark-#{bookmark.id}", class: "foldered-bookmark" }
+              %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
+              %td= truncate(bookmark.description, length: 120)
+              %td
+                = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
+                  data: { toggle: "modal", target: "#edit-modal" }
+                |
+                = link_to "Delete", bookmark, remote: true, method: :delete,
+                  data: { confirm: "Are you sure?" }
 
-      - @bookmarks.where('folder_id <> ?', Folder.find_by_name('no_folder').id).each do |bookmark|
-        %tr{ id: bookmark.id }
-          %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
-          %td= truncate(bookmark.description, length: 120)
-          %td
-            = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
-              data: { toggle: "modal", target: "#edit-modal" }
-            |
-            = link_to "Delete", bookmark, remote: true, method: :delete,
-              data: { confirm: "Are you sure?" }
+        #no_folder
+          - @bookmarks.where('folder_id = ?', @folders.where("name = ?", "no_folder").first.id).each do |bookmark|
+            %tr{ id: "bookmark-#{bookmark.id}", class: "bookmark"}
+              %td= link_to truncate(bookmark.title, lenth: 30), url_checker(bookmark.url), target: "_blank"
+              %td= truncate(bookmark.description, length: 120)
+              %td
+                = link_to "Edit", edit_bookmark_path(bookmark), remote: true,
+                  data: { toggle: "modal", target: "#edit-modal" }
+                |
+                = link_to "Delete", bookmark, remote: true, method: :delete,
+                  data: { confirm: "Are you sure?" }

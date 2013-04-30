@@ -19,15 +19,15 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }
   validates :password_confirmation, presence: true
 
-  after_create :populate_with_default_bookmarks
   after_create :create_default_folder
+  after_create :populate_with_default_bookmarks
 
 
   def populate_with_default_bookmarks
     default_websites.each do |website|
       title, description, url = parser(website).parse
       bookmark = self.bookmarks.build(title: title, description: description,
-                           url: url)
+                           url: url, folder_id: self.folders.first.id)
       bookmark.save
     end
   end
