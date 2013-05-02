@@ -8,11 +8,9 @@
       %tbody
         - @folders.where('name <> ?', 'no_folder').each do |folder|
           %tr{ id: "folder-#{folder.id}", class: "folder" }
-            %td
+            %td{ colspan: 3 }
               = image_tag('arrow-down.png', size: "10x10", class: "arrow-#{folder.id}")
               = folder.name
-            %td
-            %td
           - folder.bookmarks.each do |bookmark|
             %tr{ id: "foldered-bookmark-#{bookmark.id}", class: "foldered-bookmark folder-id-#{folder.id}" }
               %td= link_to truncate(bookmark.title, length: 20), bookmark.url, target: "_blank"
