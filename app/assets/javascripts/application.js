@@ -25,16 +25,15 @@ $(window).load(function () {
     drop: function(event, ui) {
       if($(ui.draggable).hasClass("bookmark")) {
         var id = $(ui.draggable).attr('id').replace(/bookmark-/, '');
-
         if ($(this).hasClass('folder')) {
           var folder_id = $(this).attr('id').replace(/folder-/, '');
         }
-
         if ($(this).hasClass('foldered-bookmark')) {
           $(this).removeClass('foldered-bookmark ui-droppable');
           var folder_id = $(this).attr('class').replace(/folder-id-/, '');
           $(this).addClass('foldered-bookmark ui-droppable');
         }
+
         $(ui.draggable).removeClass("bookmark").
           addClass("foldered-bookmark").addClass("folder-id-"+folder_id);
         $(ui.draggable).attr('id', "foldered-bookmark-"+id);
@@ -49,6 +48,7 @@ $(window).load(function () {
           var old_id = $(ui.draggable).attr('class');
 
           old_id = old_id.replace('folder-id-', '');
+
           $(ui.draggable).removeClass('folder-id-'+old_id).
             addClass('ui-droppable foldered-bookmark folder-id-'+folder_id);
         }
@@ -82,17 +82,7 @@ $(window).load(function () {
     axis: "y",
     opacity: 0.6,
     distance: 20,
-    start: function(event, ui){
-      if ($(ui.item).hasClass('folder')) {
-        var folder_id = $(ui.item).attr('id').replace(/folder-/, '');
-        $('.folder-id-'+folder_id).appendTo(ui.item);
-    }},
     stop: function(event, ui){
-      if($(ui.item).hasClass('folder')) {
-        var children = $(ui.item).children('tr');
-        $(ui.item).children('tr').remove();
-        children.insertAfter(ui.item);
-      }
       var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
       var pobj = {element_ids: element_ids};
 
