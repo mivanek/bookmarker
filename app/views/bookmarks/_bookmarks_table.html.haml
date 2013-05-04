@@ -32,3 +32,5 @@
               |
               = link_to "Delete", bookmark, remote: true, method: :delete,
                 data: { confirm: "Are you sure?" }
+        %tr{ id: "no-folder-#{@folders.where('name = ?', 'no_folder')}", class: 'hidden no-folder' }
+          %td{colspan: 3} Drop here to remove from folder
