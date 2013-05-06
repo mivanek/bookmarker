@@ -7,57 +7,40 @@ $(window).load(function () {
   $('.folder, .foldered-bookmark, .no-folder').droppable({
     accept: '.bookmark, .foldered-bookmark',
     hoverClass: 'hovered-folder',
+    tolerance: 'pointer',
     drop: function(event, ui) {
-      if($(ui.draggable).hasClass("bookmark")) {
-        var id = $(ui.draggable).attr('id').replace(/bookmark-/, '');
+      if ($(ui.draggable).hasClass("bookmark")) {
+        var id = getIdFromId($(ui.draggable));
+        var folder_id = getIdFromClassOrId($(this));
 
-        if ($(this).hasClass('folder')) {
-          var folder_id = $(this).attr('id').replace(/folder-/, '');
-
-          addOrRemoveNoFolder();
-        }
-
-        if ($(this).hasClass('foldered-bookmark')) {
-          $(this).removeClass('foldered-bookmark ui-droppable');
-          var folder_id = $(this).attr('class').replace(/folder-id-/, '');
-          $(this).addClass('foldered-bookmark ui-droppable');
-        }
-        $(ui.draggable).removeClass("bookmark").
-          addClass("foldered-bookmark").addClass("folder-id-"+folder_id);
+        $(ui.draggable).removeClass("bookmark").addClass("foldered-bookmark folder-id-"+folder_id);
         $(ui.draggable).attr('id', "foldered-bookmark-"+id);
         addOrRemoveNoFolder();
       }
+
       else if ($(ui.draggable).hasClass("foldered-bookmark")) {
-
         if ($(this).hasClass('folder')) {
-          var folder_id = $(this).attr('id').replace(/folder-/, '');
+          var folder_id = getIdFromId($(this));
+          var old_id = getIdFromClass($(ui.draggable));
 
-          $(ui.draggable).removeClass('foldered-bookmark ui-droppable');
-
-          var old_id = $(ui.draggable).attr('class');
-
-          old_id = old_id.replace('folder-id-', '');
           $(ui.draggable).removeClass('folder-id-'+old_id).
-            addClass('ui-droppable foldered-bookmark folder-id-'+folder_id);
-          addOrRemoveNoFolder();
+            addClass('folder-id-'+folder_id);
         }
 
         else if ($(this).hasClass('foldered-bookmark')){
-          $(this).removeClass('foldered-bookmark ui-droppable');
-          var new_class = $(this).attr('class');
+          var new_class = $(this).attr('class').match(/folder-id-\d+/).join();
 
           $(ui.draggable).removeAttr('class');
           $(ui.draggable).addClass('foldered-bookmark ui-droppable '+new_class);
-          $(this).addClass('foldered-bookmark ui-droppable');
-          addOrRemoveNoFolder();
         }
 
         else if ($(this).hasClass('no-folder')) {
-          hideNoFolder();
-          $(ui.draggable).removeClass('foldered-bookmark').addClass('bookmark')
-          var bookmark_id = $(ui.draggable).attr('id').replace(/foldered-bookmark-/, '');
+          var bookmark_id = getIdFromId($(ui.draggable));
+
+          $(ui.draggable).removeAttr('class').addClass('bookmark ui-droppable')
           $(ui.draggable).attr('id', 'bookmark-'+bookmark_id);
         }
+        addOrRemoveNoFolder();
       }
     }
   });
@@ -67,29 +50,31 @@ $(window).load(function () {
     hoverClass: 'hovered-folder',
     drop: function(event, ui) {
       if ($(ui.draggable).hasClass("foldered-bookmark")) {
-        var id = $(ui.draggable).attr('id').replace(/foldered-bookmark-/, '');
+        var id = getIdFromId($(ui.draggable))
 
-        $(ui.draggable).removeAttr('class').addClass("bookmark ui-draggable");
+        $(ui.draggable).removeAttr('class').addClass("bookmark ui-droppable");
         $(ui.draggable).attr('id', 'bookmark-'+id);
+        addOrRemoveNoFolder();
       }
     }
   });
 
   $('#bookmarks_table tbody').sortable({
     axis: "y",
-    containment: 'tbody',
     opacity: 0.6,
     distance: 20,
     start: function(event, ui){
       if ($(ui.item).hasClass('folder')) {
-        var folder_id = $(ui.item).attr('id').replace(/folder-/, '');
-        $('.folder-id-'+folder_id).appendTo(ui.item);
+        var folder_id = getIdAsString('folder-id-', $(ui.item));
+        $('.'+folder_id).appendTo(ui.item);
+
     }},
     stop: function(event, ui){
       if($(ui.item).hasClass('folder')) {
         var children = $(ui.item).children('tr');
         $(ui.item).children('tr').remove();
         children.insertAfter(ui.item);
+        $('#bookmarks_table tbody').sortable({containment: 'tbody'});
       }
       var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
       var pobj = {element_ids: element_ids};
@@ -100,7 +85,7 @@ $(window).load(function () {
 
 
   $('tr.folder').click(function () {
-    var id = $(this).attr('id').replace(/folder-/, '');
+    var id = getIdFromId($(this));
 
     $('.folder-id-'+id).slideToggle('fast');
 
@@ -113,28 +98,48 @@ $(window).load(function () {
     }
   });
 
-  if ($('tbody').children().hasClass('bookmark') == false) {
+  if (!tableHasBookmarks()) {
     showNoFolder();
   }
 
   function hideNoFolder() {
     $('.no-folder').addClass('hidden');
-  }
+  };
 
   function showNoFolder() {
     $('.no-folder').removeClass('hidden');
-  }
+  };
 
   function tableHasBookmarks() {
-    $('tbody tr').hasClass('bookmark');
-  }
+    return $('tbody tr').hasClass('bookmark');
+  };
 
   function addOrRemoveNoFolder() {
+    if ($('.ui-sortable-placeholder').hasClass('bookmark')) {
+      $('.ui-sortable-placeholder').removeClass('bookmark');
+    }
     if (tableHasBookmarks() && !$('.no-folder').hasClass('hidden')) {
       hideNoFolder();
     }
     else if (!tableHasBookmarks() && $('.no-folder').hasClass('hidden')){
       showNoFolder();
     }
-  }
+  };
+
+  function getIdFromClassOrId(object) {
+    if (object.hasClass('folder')) return getIdFromId(object);
+    else if (object.hasClass('foldered-bookmark')) return getIdFromClass(object);
+  };
+
+  function getIdFromId(object) {
+    return object.attr('id').replace(/\D+/g, '');
+  };
+
+  function getIdFromClass(object) {
+    return object.attr('class').replace(/\D+/g, '');
+  };
+
+  function getIdAsString(string, object) {
+    return string + getIdFromId(object)
+  };
 });
