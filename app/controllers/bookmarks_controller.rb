@@ -6,7 +6,6 @@ class BookmarksController < ApplicationController
   def index
     @folders = current_user.folders
     @bookmarks = current_user.bookmarks
-    @no_folder = current_user.folders.where("name = ?", "no_folder")
   end
 
   def new
@@ -20,6 +19,7 @@ class BookmarksController < ApplicationController
       end
       format.html do
         bookmark = current_user.bookmarks.build(params[:bookmark])
+        binding.pry
         if bookmark.save
           flash[:success] = "Bookmark successfully created."
           redirect_to bookmarks_path

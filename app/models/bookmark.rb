@@ -23,8 +23,10 @@ class Bookmark < ActiveRecord::Base
   private
 
     def set_no_folder
-      no_folder = Folder.where('user_id = ? AND name = ?', user_id, 'no_folder').first
-      self.folder_id = no_folder.id
+      if self.folder_id.blank?
+        no_folder = Folder.where('user_id = ? AND name = ?', user_id, 'no_folder').first
+        self.folder_id = no_folder.id
+      end
     end
 
     def add_sequence
