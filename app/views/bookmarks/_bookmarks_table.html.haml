@@ -6,7 +6,7 @@
         %th Description
         %th.table-edit Action
       %tbody
-        - @folders.where('name <> ?', 'no_folder').each do |folder|
+        - all_except_no_folder.each do |folder|
           %tr{ id: "folder-#{folder.id}", class: "folder" }
             %td{ colspan: 3 }
               = image_tag('arrow-down.png', size: "10x10", class: "arrow-#{folder.id}")
@@ -22,9 +22,9 @@
                 = link_to "Delete", bookmark, remote: true, method: :delete,
                   data: { confirm: "Are you sure?" }
 
-        - @bookmarks.where('folder_id = ?', @folders.where("name = ?", "no_folder").first.id).each do |bookmark|
+        - no_folder.each do |bookmark|
           %tr{ id: "bookmark-#{bookmark.id}", class: "bookmark"}
-            %td= link_to truncate(bookmark.title, length: 25), url_checker(bookmark.url), target: "_blank"
+            %td= link_to truncate(bookmark.title, length: 25), bookmark.url, target: "_blank"
             %td= truncate(bookmark.description, length: 120)
             %td
               = link_to "Edit", edit_bookmark_path(bookmark), remote: true,

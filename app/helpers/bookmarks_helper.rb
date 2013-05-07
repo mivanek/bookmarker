@@ -12,4 +12,12 @@ module BookmarksHelper
   def protocol
     %w{http:// https:// ftp://}
   end
+
+  def no_folder
+    @bookmarks.where('folder_id = ?', @folders.where(name: "no_folder").first.id)
+  end
+
+  def all_except_no_folder
+    @folders.where('name <> ?', 'no_folder')
+  end
 end
