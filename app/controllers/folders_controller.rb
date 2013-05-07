@@ -6,10 +6,18 @@ class FoldersController < ApplicationController
   def create
     @folder = current_user.folders.build(params[:folder])
     if @folder.save
-      flash[:success] = "Bookmarks successfully created."
-      redirect_to bookmarks_path
+      respond_to do |format|
+        format.html do
+          flash[:success] = "Bookmarks successfully created."
+          redirect_to bookmarks_path and return
+        end
+        format.js do
+          @bookmarks = current_user.bookmarks
+          @folders = current_user.folders
+        end
+      end
     else
-      render 'new'
+      render 'new' and return
     end
   end
 

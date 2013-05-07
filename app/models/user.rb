@@ -1,3 +1,5 @@
+require 'parser'
+
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
@@ -17,6 +19,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }
   validates :password_confirmation, presence: true
 
+  after_create :create_default_folder
   after_create :populate_with_default_bookmarks
 
 
@@ -24,9 +27,14 @@ class User < ActiveRecord::Base
     default_websites.each do |website|
       title, description, url = parser(website).parse
       bookmark = self.bookmarks.build(title: title, description: description,
-                           url: url)
+                           url: url, folder_id: self.folders.first.id)
       bookmark.save
     end
+  end
+
+  def create_default_folder
+    folder = self.folders.build(name: "no_folder")
+    folder.save
   end
 
   private

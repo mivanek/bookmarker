@@ -72,3 +72,15 @@ input {
 .form-inline {
   display: inline;
 }
+
+.foldered-bookmark > td:first-child {
+  padding-left: 20px !important;
+}
+
+.hovered-folder {
+  color: #F00;
+}
+
+.hidden {
+  display: none;
+}

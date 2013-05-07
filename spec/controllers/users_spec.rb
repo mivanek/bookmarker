@@ -26,7 +26,7 @@ describe UsersController do
 
       it { assigns(:user).should == user }
       it { response.should redirect_to(bookmarks_path) }
-      it { flash[:success].should == "Welcome to Bookmarks Application" }
+      it { flash[:success].should == "Welcome to Bookmarks Application." }
     end
 
     context "failed to create user" do
@@ -38,14 +38,14 @@ describe UsersController do
       it { response.should render_template('new') }
       it { flash[:error].should == "Failed to create user, please try again." }
     end
-  end
 
-  describe "#edit" do
-    before do
-      User.should_receive(:find).and_return(user)
-      put :edit
+    context "when loged in, redirect to bookmarks path" do
+      before do
+        @controller.stub(:signed_in?).and_return(true)
+        post :create
+      end
+
+      it { response.should redirect_to(bookmarks_path) }
     end
-
-    
   end
 end

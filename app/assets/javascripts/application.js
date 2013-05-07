@@ -16,13 +16,3 @@
 //= require bootstrap
 //= require_tree .
 
-$(window).load(function () {
-  $('#bookmarks_table tbody').sortable({
-    update: function(event, ui){
-      var bookmark_id = $("#bookmarks_table tbody").last().sortable('toArray');
-      var pobj = {bookmarks: bookmark_id};
-      console.log(pobj);
-      $.post("/bookmarks/reorder", pobj);
-    }
-  });
-});

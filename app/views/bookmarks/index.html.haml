@@ -8,15 +8,17 @@
       value: "Add bookmark...")
 .btn-group.pull-right
   .btn-group
-    %button{ class: "btn" } Create new folder
+    = link_to "Create new folder", new_folder_path, remote: true, class: "btn",
+      data: { toggle: "modal", target: "#folder-create-form" }
     = button_tag class: "btn dropdown-toggle", data: { toggle: "dropdown" } do
       %span.caret
     %ul.dropdown-menu
       %li= link_to "List/edit folders", '#'
       %li= link_to "Delete folder", '#'
-  = link_to "Add bookmark (manual)", '#', class: "btn"
+  = link_to "Add bookmark (manual)", new_bookmark_path, class: "btn"
 
-#bookmarks_table
-  = render 'bookmarks_table', bookmarks: @bookmarks
+= render 'bookmarks_table'
 
 = render 'edit_modal'
+
+= render 'folders/folder_form_modal'

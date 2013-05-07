@@ -1,17 +1,27 @@
 class Folder < ActiveRecord::Base
-  attr_accessible :bookmark_id, :name, :user_id
+  attr_accessible :name, :user_id, :sequence
 
-  belongs_to :users
+  belongs_to :user
   has_many :bookmarks
 
-  before_save :add_sequence
+  default_scope order: 'sequence'
+
+  before_save :add_sequence, if: 'new_record?'
+
+  validates :name, presence: true
+  validates :user_id, presence: true
 
   private
 
     def add_sequence
       if self.sequence.nil?
-        last_sequence = Folder.order(:sequence).last.sequence
-        self.sequence = 1 + (last_sequence.nil? ? 0 : last_sequence)
+        folder = Folder.order(:sequence).last
+        if folder
+          last_sequence = folder.sequence
+          self.sequence = 1 + (last_sequence.nil? ? 0 : last_sequence)
+        else
+          self.sequence = 1
+        end
       end
     end
 end

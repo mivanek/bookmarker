@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       sign_in @user, false
-      flash[:success] = "Welcome to Bookmarks Application"
+      flash[:success] = "Welcome to Bookmarks Application."
       redirect_to bookmarks_path
     else
       flash[:error] = "Failed to create user, please try again."
@@ -26,12 +26,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+  end
+
   def update
+    if @user.update_attributes(params[:user])
+      sign_in @user, false
+      flash[:success] = "Profile updated."
+      redirect_to root_path
+    else
+      render 'edit'
+    end
   end
 
   private
 
-  # PROVJERIT ZA BOLJI NACIN KREIRANJA ENTRY-A KOD KREIRANJA KORISNIKA!!!
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
