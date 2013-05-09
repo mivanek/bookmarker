@@ -5,7 +5,7 @@
       %nav
         %ul.nav.pull-right
           - if signed_in? && current_user.demo
-            %li= link_to "Sign in", signin_path
+            %li= link_to "Make account permanent", signin_path
           - if signed_in?
             %li#fat-menu.dropdown
               %a.dropdown-toggle{ href: "#", 'data-toggle' => "dropdown" }
