@@ -71,7 +71,7 @@ class BookmarksController < ApplicationController
 
 
   def reorder
-    @no_folder = current_user.folders.where("name = ?", "no_folder")
+    no_folder = current_user.folders.where("name = ?", "no_folder").first.id
     @element_ids = params[:element_ids].dup
     @element_ids = @element_ids.split("&")
     n = 1
@@ -86,43 +86,11 @@ class BookmarksController < ApplicationController
         bookmark.update_attributes(sequence: n, folder_id: @folder_id)
       elsif split_id[0] == "bookmark"
         bookmark = Bookmark.find(split_id[1])
-        bookmark.update_attributes(sequence: n, folder_id: @no_folder.first.id)
+        bookmark.update_attributes(sequence: n, folder_id: no_folder.first.id)
       end
       n += 1
     end
     render :json => {}
-    #@folders = params[:element_ids].clone; @bookmarks = params[:element_ids].clone
-    #folder_bookmark_hash = Hash.new
-    #@folders.each do |folder|
-      #next if folder.split("-")[0] == 'bookmark'
-      #@bookmarks.each do |bookmark|
-        #next if bookmark.split("-")[0] == 'folder' or folder_bookmark_hash.has_value?(bookmark)
-        #break if bookmark.split("-")[0] == 'folder' or !folder_bookmark_hash.has_key?(folder) or folder.split("-")[0] == "bookmark"
-        #folder_bookmark_hash[folder] ||= []
-        #folder_bookmark_hash[folder] << bookmark
-      #end
-    #end
-    #binding.pry
-
-    #@bookmark_ids = params[:element_ids].dup; @folder_ids = params[:element_ids].dup
-    #@bookmark_ids.keep_if { |bookmark| bookmark =~ /bookmark-/ }.map!{ |id| id.delete!("bookmark-") }
-    #@folder_ids.keep_if { |folder| folder =~ /folder-/ }.map!{ |id| id.delete!("folder-") }
-    #n = 0
-    #ActiveRecord::Base.transaction do
-      #@folder_ids.each do |folder_id|
-        #folder = Folder.find(folder_id)
-        #folder.sequence = n
-        #n += 1
-        #folder.save
-      #end
-      #@bookmark_ids.each do |bookmark_id|
-        #bookmark = Bookmark.find(bookmark_id)
-        #bookmark.sequence = n
-        #n += 1
-        #bookmark.save
-      #end
-    #end
-    #render :json => {}
   end
 
   private

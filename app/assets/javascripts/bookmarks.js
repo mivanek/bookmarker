@@ -84,8 +84,8 @@ $(window).load(function () {
   });
 
 
-  $('tr.folder').click(function () {
-    var id = getIdFromId($(this));
+  $('tr.folder > td:first-child').click(function () {
+    var id = getIdFromId($(this).parent());
 
     $('.folder-id-'+id).slideToggle('fast');
 
