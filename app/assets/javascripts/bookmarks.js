@@ -61,20 +61,26 @@ $(window).load(function () {
 
   $('#bookmarks_table tbody').sortable({
     axis: "y",
+    containment: 'tbody',
     opacity: 0.6,
     distance: 20,
     start: function(event, ui){
       if ($(ui.item).hasClass('folder')) {
-        var folder_id = getIdAsString('folder-id-', $(ui.item));
-        $('.'+folder_id).appendTo(ui.item);
-
+        var bookmarks_id = getIdAsString('folder-id-', $(ui.item));
+        var folder_id = getIdAsString('folder-', $(ui.item));
+        $('.'+bookmarks_id).appendTo(ui.item);
+        folders = $("tr.folder:not('#"+folder_id+"')");
+        toggleFolders(folders)
     }},
     stop: function(event, ui){
       if($(ui.item).hasClass('folder')) {
         var children = $(ui.item).children('tr');
+        var folder_id = getIdAsString('folder-', $(ui.item));
+
         $(ui.item).children('tr').remove();
         children.insertAfter(ui.item);
-        $('#bookmarks_table tbody').sortable({containment: 'tbody'});
+        folders = $("tr.folder:not('#"+folder_id+"')");
+        toggleFolders(folders);
       }
       var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
       var pobj = {element_ids: element_ids};
@@ -88,14 +94,7 @@ $(window).load(function () {
     var id = getIdFromId($(this).parent());
 
     $('.folder-id-'+id).slideToggle('fast');
-
-    if($('.arrow-'+id).attr('src') == '/assets/arrow-down.png') {
-      $('.arrow-'+id).attr('src', '/assets/arrow-right.png');
-    }
-
-    else if($('.arrow-'+id).attr('src') == '/assets/arrow-right.png') {
-      $('.arrow-'+id).attr('src', '/assets/arrow-down.png');
-    }
+    toggleArrow(id);
   });
 
   if (!tableHasBookmarks()) {
@@ -142,4 +141,34 @@ $(window).load(function () {
   function getIdAsString(string, object) {
     return string + getIdFromId(object)
   };
+
+  function toggleArrow(id) {
+    if($('.arrow-'+id).attr('src') == '/assets/arrow-down.png') {
+      $('.arrow-'+id).attr('src', '/assets/arrow-right.png');
+    }
+
+    else if($('.arrow-'+id).attr('src') == '/assets/arrow-right.png') {
+      $('.arrow-'+id).attr('src', '/assets/arrow-down.png');
+    }
+  }
+
+  function toggleFolders(folders) {
+    $.each(folders, function(index, folder) {
+      if (!($(folder).hasClass('ui-sortable-placeholder'))) {
+        var id = $(folder).attr('id').replace(/\D+/g, '');
+        $('.folder-id-'+id).toggle(0);
+        toggleArrow(id);
+      }
+    });
+  }
+
+  function hideFolders(folders) {
+    $.each(folders, function(index, folder) {
+      if (!($(folder).hasClass('ui-sortable-placeholder'))) {
+        var id = $(folder).attr('id').replace(/\D+/g, '');
+        $('.folder-id-'+id).hide(0);
+        toggleArrow(id);
+      }
+    });
+  }
 });
