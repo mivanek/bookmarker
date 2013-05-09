@@ -9,7 +9,11 @@ BookmarksProject::Application.routes.draw do
     end
   end
 
-  resources :users
+  resources :users, except: [:show] do
+    collection do
+      post 'create_demo'
+    end
+  end
 
   root to: 'static_pages#index'
 
