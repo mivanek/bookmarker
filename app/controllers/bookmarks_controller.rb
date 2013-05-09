@@ -86,7 +86,7 @@ class BookmarksController < ApplicationController
         bookmark.update_attributes(sequence: n, folder_id: @folder_id)
       elsif split_id[0] == "bookmark"
         bookmark = Bookmark.find(split_id[1])
-        bookmark.update_attributes(sequence: n, folder_id: no_folder.first.id)
+        bookmark.update_attributes(sequence: n, folder_id: no_folder)
       end
       n += 1
     end

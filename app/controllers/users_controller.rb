@@ -55,12 +55,12 @@ class UsersController < ApplicationController
     sign_in user, true
     flash[:success] =
       "Welcome to the demo version of Bookmarks Application.<br>
-      We have created a temporary demo account for your use. If you want to continue
-      using this account, click on the Sign in link in the header and sign in with the following
-      parameters: <br>
+      We have created a temporary demo account for you to use. If you want to continue
+      using this account, click on the 'Make this account permanent' in the header
+      and sign in with the following parameters: <br>
       <ul>
-        <li>Email: #{email}<br>
-        <li>Password: #{password}<br>
+        <li>Email: #{email}
+        <li>Password: #{password}
       </ul>
       After you sign in, you will be prompted to enter a new email, user name and password, after
       which your account should become permanent.<br>
