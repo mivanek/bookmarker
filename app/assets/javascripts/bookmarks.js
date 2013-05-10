@@ -2,6 +2,15 @@
 // All this logic will automatically be available in application.js.
 // You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(window).load(function () {
+  jQueryCall();
+});
+
+$(document).ajaxComplete(function() {
+  jQueryCall();
+});
+
+
+function jQueryCall() {
 
   // let folder be droppable
   $('.folder, .foldered-bookmark, .no-folder').droppable({
@@ -171,4 +180,4 @@ $(window).load(function () {
       }
     });
   }
-});
+};
