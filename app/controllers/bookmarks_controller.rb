@@ -96,11 +96,15 @@ class BookmarksController < ApplicationController
   private
 
     def create_remote(link)
-      title, description, url = parser(link).parse
-      bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
-      if bookmark.save
-        @folders = current_user.folders
-        @bookmarks = current_user.bookmarks
+      begin
+        title, description, url = parser(link).parse
+        bookmark = current_user.bookmarks.build(title: title, description: description, url: url)
+        if bookmark.save
+          @folders = current_user.folders
+          @bookmarks = current_user.bookmarks
+        end
+      rescue
+        flash.now[:error] = "Failed to parse website, please add bookmark manually."
       end
     end
 
