@@ -21,7 +21,6 @@ class UsersController < ApplicationController
       flash[:success] = "Welcome to Bookmarks Application."
       redirect_to bookmarks_path
     else
-      flash[:error] = "Failed to create user, please try again."
       render 'new'
     end
   end
