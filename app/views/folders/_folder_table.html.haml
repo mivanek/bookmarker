@@ -1,0 +1,16 @@
+#folder_table
+  %table.table.table-hover.table-condensed
+    %thead
+      %th.folder-table-name Folder name
+      %th.table-edit Action
+    %tbody
+      - folders.each do |folder|
+        %tr
+          %td.folder-table-name= folder.name
+          %td.table-edit
+            = link_to "Edit", edit_folder_path(folder), remote: true,
+              data: { toggle: "modal", target: "#folder_edit_modal" }
+            |
+            = link_to "Delete", delete_form_folders_path(id: folder.id), remote: true,
+              data: { toggle: "modal", target: "#folder_delete_modal" }
+

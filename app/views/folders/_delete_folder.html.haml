@@ -1,0 +1,7 @@
+%p
+  Do you want to delete bookmarks inside the folder as well?
+
+= link_to "Yes", folder_path(id: folder.id, delete_bookmarks: true), method: :delete,
+  class: "btn btn-large btn-danger pull-left", remote: true
+= link_to "No", folder_path(id: folder.id, delete_bookmarks: false), method: :delete,
+  class: "btn btn-large pull-right", remote: true
