@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   before_save :create_remember_token
 
   has_many :bookmarks, dependent: :destroy
-  has_many :folders
+  has_many :folders, dependent: :destroy
 
   validates :email, presence: true,
             format: { with: VALID_EMAIL_REGEX },

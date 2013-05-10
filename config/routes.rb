@@ -1,6 +1,10 @@
 BookmarksProject::Application.routes.draw do
 
-  resources :folders, except: [:index]
+  resources :folders do
+    collection do
+      get 'delete_form'
+    end
+  end
 
   resources :bookmarks do
     collection do
