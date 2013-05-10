@@ -13,7 +13,7 @@
     = button_tag class: "btn dropdown-toggle", data: { toggle: "dropdown" } do
       %span.caret
     %ul.dropdown-menu
-      %li= link_to "List/edit folders", '#'
+      %li= link_to "List/edit folders", folders_path
       %li= link_to "Delete folder", '#'
     = link_to "Add bookmark (manual)", new_bookmark_path, class: "btn"
 
