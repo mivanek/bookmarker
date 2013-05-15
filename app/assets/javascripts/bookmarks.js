@@ -152,11 +152,11 @@ function jQueryCall() {
   };
 
   function toggleArrow(id) {
-    if($('.arrow-'+id).attr('src') == '/assets/arrow-down.png') {
+    if($('.arrow-'+id).attr('src').match(/arrow-down/)) {
       $('.arrow-'+id).attr('src', '/assets/arrow-right.png');
     }
 
-    else if($('.arrow-'+id).attr('src') == '/assets/arrow-right.png') {
+    else if($('.arrow-'+id).attr('src').match(/arrow-right/)) {
       $('.arrow-'+id).attr('src', '/assets/arrow-down.png');
     }
   }

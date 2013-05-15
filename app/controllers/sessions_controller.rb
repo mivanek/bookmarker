@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if signed_in? && !current_user.demo
+    if signed_in? && !current_user.try(:demo)
       redirect_to root_path
     end
     user = User.find_by_email(params[:email].downcase)
