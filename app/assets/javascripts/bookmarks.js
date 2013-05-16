@@ -6,6 +6,7 @@ $(window).load(function () {
 });
 
 $(document).ajaxComplete(function() {
+  $('tr.folder > td').unbind('click')
   jQueryCall();
 });
 
@@ -99,7 +100,7 @@ function jQueryCall() {
   });
 
 
-  $('tr.folder > td:first-child').click(function () {
+  $('tr.folder > td').on('click', function () {
     var id = getIdFromId($(this).parent());
 
     $('.folder-id-'+id).slideToggle('fast');
