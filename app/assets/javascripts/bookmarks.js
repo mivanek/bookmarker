@@ -92,7 +92,7 @@ function jQueryCall() {
         folders = $("tr.folder:not('#"+folder_id+", .closed')");
         openAllFolders(folders)
       }
-      var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
+      var element_ids = $("#bookmarks_table tbody").sortable('serialize');
       var pobj = {element_ids: element_ids};
 
       $.post("/bookmarks/reorder", pobj);
