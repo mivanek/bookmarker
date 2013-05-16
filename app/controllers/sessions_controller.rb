@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       redirect_to root_path
     end
     user = User.find_by_email(params[:email].downcase)
-    if user.demo
+    if user.try(:demo)
       sign_in user, false
       redirect_to edit_user_path(user) and return
     end
