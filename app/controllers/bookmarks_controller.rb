@@ -74,21 +74,40 @@ class BookmarksController < ApplicationController
     no_folder = current_user.folders.where("name = ?", "no_folder").first.id
     @element_ids = params[:element_ids].dup
     @element_ids = @element_ids.split("&")
+    @closed_folders = [] || params[:closed_folders]
     n = 1
     @element_ids.each do |id|
       split_id = id.split("[]=")
-      if split_id[0] == "folder"
+      case split_id[0]
+      when "folder"
         @folder_id = split_id[1]
         folder = Folder.find(@folder_id)
-        folder.update_attributes(sequence: n)
-      elsif split_id[0] == "foldered-bookmark"
+        if @closed_folders.include? split_id.join('-')
+          folder.update_attributes(sequence: n, closed: true)
+        else
+          folder.update_attributes(sequence: n, closed: false)
+        end
+      when "foldered-bookmark"
         bookmark = Bookmark.find(split_id[1])
         bookmark.update_attributes(sequence: n, folder_id: @folder_id)
-      elsif split_id[0] == "bookmark"
+      when "bookmark"
         bookmark = Bookmark.find(split_id[1])
         bookmark.update_attributes(sequence: n, folder_id: no_folder)
       end
       n += 1
+    end
+    render :json => {}
+  end
+
+  def close_or_open_folder
+    folder_id = params[:opened_or_closed][0]
+    opened_or_closed = params[:opened_or_closed][1]
+    folder = Folder.find(folder_id)
+    case opened_or_closed
+    when "opened"
+      folder.update_attributes(closed: false)
+    when "closed"
+      folder.update_attributes(closed: true)
     end
     render :json => {}
   end

@@ -10,6 +10,7 @@ BookmarksProject::Application.routes.draw do
     collection do
       post 'create_remote', as: 'create_remote'
       post 'reorder'
+      post 'close_or_open_folder'
     end
   end
 

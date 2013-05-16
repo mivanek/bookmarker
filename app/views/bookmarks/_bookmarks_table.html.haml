@@ -7,7 +7,7 @@
         %th.table-edit Action
       %tbody
         - all_except_no_folder(@folders).each do |folder|
-          %tr{ id: "folder-#{folder.id}", class: "folder" }
+          %tr{ id: "folder-#{folder.id}", class: "folder #{check_if_closed_folder(folder)}" }
             %td{ colspan: 3 }
               = image_tag('arrow-open.png', size: "10x10", class: "arrow-#{folder.id}")
               = folder.name
