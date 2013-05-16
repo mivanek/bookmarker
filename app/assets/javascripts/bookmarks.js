@@ -79,8 +79,8 @@ function jQueryCall() {
         var bookmarks_id = getIdAsString('folder-id-', $(ui.item));
         var folder_id = getIdAsString('folder-', $(ui.item));
         $('.'+bookmarks_id).appendTo(ui.item);
-        folders = $("tr.folder:not('#"+folder_id+"')");
-        toggleFolders(folders)
+        folders = $("tr.folder:not('#"+folder_id+", .closed')");
+        closeAllFolders(folders);
     }},
     stop: function(event, ui){
       if($(ui.item).hasClass('folder')) {
@@ -89,8 +89,8 @@ function jQueryCall() {
 
         $(ui.item).children('tr').remove();
         children.insertAfter(ui.item);
-        folders = $("tr.folder:not('#"+folder_id+"')");
-        toggleFolders(folders);
+        folders = $("tr.folder:not('#"+folder_id+", .closed')");
+        openAllFolders(folders)
       }
       var element_ids = $("#bookmarks_table tbody").last().sortable('serialize');
       var pobj = {element_ids: element_ids};
@@ -103,8 +103,7 @@ function jQueryCall() {
   $('tr.folder > td').on('click', function () {
     var id = getIdFromId($(this).parent());
 
-    $('.folder-id-'+id).slideToggle('fast');
-    toggleArrow(id);
+    toggleFolder(id);
   });
 
   if (!tableHasBookmarks()) {
@@ -152,17 +151,38 @@ function jQueryCall() {
     return string + getIdFromId(object)
   };
 
+  function openArrow(id) {
+    $('.arrow-'+id).attr('src', '/assets/arrow-open.png');
+  }
+  function closeArrow(id) {
+    $('.arrow-'+id).attr('src', '/assets/arrow-closed.png');
+  }
+
   function toggleArrow(id) {
-    if($('.arrow-'+id).attr('src').match(/arrow-down/)) {
-      $('.arrow-'+id).attr('src', '/assets/arrow-right.png');
+    if($('.arrow-'+id).attr('src').match(/arrow-open/)) {
+      closeArrow(id);
     }
 
-    else if($('.arrow-'+id).attr('src').match(/arrow-right/)) {
-      $('.arrow-'+id).attr('src', '/assets/arrow-down.png');
+    else if($('.arrow-'+id).attr('src').match(/arrow-closed/)) {
+      openArrow(id);
     }
   }
 
-  function toggleFolders(folders) {
+  function toggleFolder(id) {
+    if ($('#folder-'+id).hasClass('closed')) {
+      openArrow(id);
+      $('.folder-id-'+id).show(0);
+      $('#folder-'+id).removeClass('closed');
+    }
+    else {
+      closeArrow(id);
+      $('.folder-id-'+id).hide(0);
+      $('#folder-'+id).addClass('closed');
+    }
+  };
+
+
+  function toggleAllFolders(folders) {
     $.each(folders, function(index, folder) {
       if (!($(folder).hasClass('ui-sortable-placeholder'))) {
         var id = $(folder).attr('id').replace(/\D+/g, '');
@@ -172,12 +192,22 @@ function jQueryCall() {
     });
   }
 
-  function hideFolders(folders) {
+  function closeAllFolders(folders) {
     $.each(folders, function(index, folder) {
       if (!($(folder).hasClass('ui-sortable-placeholder'))) {
         var id = $(folder).attr('id').replace(/\D+/g, '');
         $('.folder-id-'+id).hide(0);
-        toggleArrow(id);
+        closeArrow(id);
+      }
+    });
+  }
+
+  function openAllFolders(folders) {
+    $.each(folders, function(index, folder) {
+      if (!($(folder).hasClass('ui-sortable-placeholder'))) {
+        var id = $(folder).attr('id').replace(/\D+/g, '');
+        $('.folder-id-'+id).show(0);
+        openArrow(id);
       }
     });
   }

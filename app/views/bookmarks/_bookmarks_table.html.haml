@@ -9,7 +9,7 @@
         - all_except_no_folder(@folders).each do |folder|
           %tr{ id: "folder-#{folder.id}", class: "folder" }
             %td{ colspan: 3 }
-              = image_tag('arrow-down.png', size: "10x10", class: "arrow-#{folder.id}")
+              = image_tag('arrow-open.png', size: "10x10", class: "arrow-#{folder.id}")
               = folder.name
           - folder.bookmarks.each do |bookmark|
             %tr{ id: "foldered-bookmark-#{bookmark.id}", class: "foldered-bookmark folder-id-#{folder.id}" }
