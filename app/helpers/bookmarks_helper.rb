@@ -31,4 +31,12 @@ module BookmarksHelper
     all_except_no_folder(current_user.folders).map { |folder| all_folders << [folder.name, folder.id] }
     all_folders
   end
+
+  def check_if_closed_folder(folder)
+    if folder.closed
+      "closed"
+    else
+      nil
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class Folder < ActiveRecord::Base
-  attr_accessible :name, :user_id, :sequence
+  attr_accessible :name, :user_id, :sequence, :closed
 
   belongs_to :user
   has_many :bookmarks

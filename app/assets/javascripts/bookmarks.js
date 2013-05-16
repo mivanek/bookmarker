@@ -93,7 +93,12 @@ function jQueryCall() {
         openAllFolders(folders)
       }
       var element_ids = $("#bookmarks_table tbody").sortable('serialize');
-      var pobj = {element_ids: element_ids};
+      var closed = []
+      $('.closed').each(function() {
+        closed.push($(this).attr('id'));
+      });
+      var pobj = {element_ids: element_ids,
+      closed_folders: closed};
 
       $.post("/bookmarks/reorder", pobj);
     }
@@ -101,9 +106,28 @@ function jQueryCall() {
 
 
   $('tr.folder > td').on('click', function () {
-    var id = getIdFromId($(this).parent());
+    if(!$(this).hasClass('ui-sortable-placeholder')) {
+      var table_row = $(this).parent();
+      var id = getIdFromId(table_row);
+      var folder = []
 
-    toggleFolder(id);
+      toggleFolder(id);
+      folder.push(getIdFromId(table_row));
+      if (table_row.hasClass('closed')) {
+        folder.push('closed');
+      }
+      else {
+        folder.push('opened');
+      };
+      var pobj = {opened_or_closed: folder}
+
+      $.post("/bookmarks/close_or_open_folder", pobj);
+    }
+  });
+
+  $('.closed').each(function() {
+    var id = getIdFromId($(this));
+    closeFolder(id);
   });
 
   if (!tableHasBookmarks()) {
@@ -171,13 +195,23 @@ function jQueryCall() {
   function toggleFolder(id) {
     if ($('#folder-'+id).hasClass('closed')) {
       openArrow(id);
-      $('.folder-id-'+id).show(0);
+      var bookmarks = $('.folder-id-'+id);
+      $('.folder-id-'+id).show(0).remove();
+      bookmarks.insertAfter('#folder-'+id);
       $('#folder-'+id).removeClass('closed');
     }
     else {
       closeArrow(id);
       $('.folder-id-'+id).hide(0);
       $('#folder-'+id).addClass('closed');
+    }
+  };
+
+  function closeFolder(id) {
+    closeArrow(id);
+    $('.folder-id-'+id).hide(0)
+    if (!$('#folder-'+id).hasClass('closed')) {
+      $('#folder-'+id).addClass('closed')
     }
   };
 
