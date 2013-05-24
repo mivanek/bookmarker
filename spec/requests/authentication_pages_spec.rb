@@ -16,7 +16,7 @@ describe "Authentication", :type => :feature do
       it { should_not have_link('Sign out', href: signout_path) }
 
       describe "after visiting another page" do
-        before { click_link "Home" }
+        before { click_link "bookmarker beta" }
         it { should_not have_selector('div.alert.alert-error', text: "Invalid") }
       end
     end

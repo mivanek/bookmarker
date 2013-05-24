@@ -16,7 +16,7 @@ FactoryGirl.define do
 
     factory :user_with_bookmarks do
       after(:create) { |user| user.send(:populate_with_default_bookmarks) }
-      after(:create) { |user| user.send(:create_default_folder) }
+      after(:create) { |user| user.send(:create_default_folders) }
     end
   end
 

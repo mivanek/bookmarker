@@ -16,7 +16,6 @@ function jQueryCall() {
   // let folder be droppable
   $('.folder, .foldered-bookmark, .no-folder').droppable({
     accept: '.bookmark, .foldered-bookmark',
-    hoverClass: 'hovered-folder',
     tolerance: 'pointer',
     drop: function(event, ui) {
       if ($(ui.draggable).hasClass("bookmark")) {
@@ -57,7 +56,6 @@ function jQueryCall() {
 
   $('.bookmark').droppable({
     accept: '.foldered-bookmark',
-    hoverClass: 'hovered-folder',
     drop: function(event, ui) {
       if ($(ui.draggable).hasClass("foldered-bookmark")) {
         var id = getIdFromId($(ui.draggable))

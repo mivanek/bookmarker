@@ -19,7 +19,6 @@ class BookmarksController < ApplicationController
       end
       format.html do
         bookmark = current_user.bookmarks.build(params[:bookmark])
-        binding.pry
         if bookmark.save
           flash[:success] = "Bookmark successfully created."
           redirect_to bookmarks_path
