@@ -10,7 +10,7 @@
   .btn-group
     = link_to "Create new folder", new_folder_path, remote: true, class: "btn",
       data: { toggle: "modal", target: "#folder-create-form" }
-    = button_tag class: "btn dropdown-toggle", data: { toggle: "dropdown" } do
+    = button_tag class: "btn dropdown-toggle drop-menu", data: { toggle: "dropdown" } do
       %span.caret
     %ul.dropdown-menu
       %li= link_to "Delete/edit folders", folders_path

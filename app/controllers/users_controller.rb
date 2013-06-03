@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user.demo
+    if @user.demo
       params[:user][:demo] = false
       flash[:success] = "Account successfully turned permanent."
     end
@@ -43,9 +43,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def create_demo
-    password = string_generator
-    email = "#{string_generator}@demo-user.com"
+  def create_demo(password = generate_password, email = generate_email)
     user_array = [name: "user-#{string_generator}",
                   email: email,
                   password: password,
@@ -73,6 +71,14 @@ class UsersController < ApplicationController
 
     def string_generator
       SecureRandom.urlsafe_base64(6)
+    end
+
+    def generate_password
+      string_generator
+    end
+
+    def generate_email
+      "#{string_generator}@demo-user.com"
     end
 
     def correct_user

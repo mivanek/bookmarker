@@ -8,7 +8,7 @@ class FoldersController < ApplicationController
     if @folder.save
       respond_to do |format|
         format.html do
-          flash[:success] = "Bookmarks successfully created."
+          flash[:success] = "Folder successfully created."
           redirect_to bookmarks_path and return
         end
         format.js do

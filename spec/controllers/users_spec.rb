@@ -3,6 +3,8 @@ require 'spec_helper'
 describe UsersController do
 
   let(:user) { mock_model(User).as_null_object }
+  let(:user_2) { User.new(name: "test", email: "test@test.com", password: "foobar",
+                          password_confirmation: "foobar", demo: true) }
 
   before do
     User.stub(:new).and_return(user)
@@ -47,5 +49,18 @@ describe UsersController do
 
       it { response.should redirect_to(bookmarks_path) }
     end
+  end
+
+  describe "#update" do
+    before do
+      @controller.stub(:correct_user).and_return(:true)
+      @controller.stub(:signed_in_user).and_return(:true)
+      @user = user_2.save
+      @controller.instance_variable_set(:@user, @user)
+      put :update, id: @user.id, user: { name: "test_user_2" }
+    end
+
+    it { flash[:success].should == "Account successfully turned permanent." }
+    it { response.should redirect_to(root_path) }
   end
 end
