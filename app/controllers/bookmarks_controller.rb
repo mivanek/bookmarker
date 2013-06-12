@@ -73,7 +73,7 @@ class BookmarksController < ApplicationController
     no_folder = current_user.folders.where("name = ?", "no_folder").first.id
     @element_ids = params[:element_ids].dup
     @element_ids = @element_ids.split("&")
-    @closed_folders = [] || params[:closed_folders]
+    @closed_folders = params[:closed_folders] || []
     n = 1
     @element_ids.each do |id|
       split_id = id.split("[]=")
@@ -99,9 +99,9 @@ class BookmarksController < ApplicationController
   end
 
   def close_or_open_folder
-    folder_id = params[:opened_or_closed][0]
+    @folder_id = params[:opened_or_closed][0]
     opened_or_closed = params[:opened_or_closed][1]
-    folder = Folder.find(folder_id)
+    folder = Folder.find(@folder_id)
     case opened_or_closed
     when "opened"
       folder.update_attributes(closed: false)

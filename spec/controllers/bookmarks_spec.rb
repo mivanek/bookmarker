@@ -5,6 +5,13 @@ describe BookmarksController do
   let(:bookmark){ mock_model(Bookmark, title: "Test title", description: "test",
                             url: "http://www.test.com").as_null_object }
   let(:user) { FactoryGirl.create(:user) }
+  let(:folder) { FactoryGirl.create(:folder, user_id: user.id) }
+  let(:folder_2) { FactoryGirl.create(:folder, user_id: user.id,
+                                      name: "A New folder") }
+  let!(:bookmark_2) { FactoryGirl.create(:bookmark, title: "new bookmark",
+                                         description: "a new bookmark",
+                                         url: "http://www.new.com",
+                                         user_id: user.id) }
   let!(:r_bookmark) { FactoryGirl.create(:bookmark, user_id: user.id) }
   before { @controller.stub(:signed_in_user).and_return(true) }
 
@@ -38,15 +45,41 @@ describe BookmarksController do
         it { flash[:success].should == "Bookmark successfully created." }
         it { should redirect_to bookmarks_path }
       end
+
+      context "failed create" do
+        before do
+          Bookmark.any_instance.stub(:save).and_return(false)
+          post :create, bookmark: r_bookmark.attributes.except("id", "created_at", "updated_at")
+        end
+
+        it { should render_template 'new' }
+      end
     end
 
 
     describe "AJAX create" do
-      it "should increase the bookmark count" do
-        expect do
-          xhr :post, :create, link: "http://www.index.hr"
-        end.to change(Bookmark, :count).by(1)
+      context "with a valid link" do
+        it "should increase the bookmark count" do
+          expect do
+            xhr :post, :create, link: "http://www.index.hr"
+          end.to change(Bookmark, :count).by(1)
+        end
       end
+
+      context "witn an invalid linK" do
+        it "should NOT increase the bookmark count" do
+          expect do
+            xhr :post, :create, link: "http://www.bullshitlink.com"
+          end.not_to change(Bookmark, :count)
+        end
+
+        it "should set a flash" do
+          xhr :post, :create, link: "http://www.bullshitlink.com"
+          flash[:error].should == "Failed to parse website, please add bookmark manually."
+        end
+
+      end
+
     end
   end
 
@@ -117,6 +150,43 @@ describe BookmarksController do
 
       it { flash[:success].should == "Bookmark successfully updated." }
       it { should redirect_to bookmarks_path }
+    end
+  end
+
+  describe "#reorder" do
+    before do
+      @element_ids = "folder[]=#{folder.id}&folder[]=#{folder_2.id}&bookmark[]=#{bookmark_2.id}&foldered-bookmark[]=#{r_bookmark.id}"
+      @controller.stub(:current_user).and_return(user)
+      @closed_folders = "folder-#{folder_2.id}"
+      xhr :post, :reorder, element_ids: @element_ids,
+                           closed_folders: @closed_folders
+    end
+
+    it { assigns(:element_ids).should_not be_nil }
+  end
+
+  describe "#close_or_open_folder" do
+    before do
+      @folder = []
+      @folder << folder.id
+    end
+
+    context "the folder is closed" do
+      before do
+        @folder << "closed"
+        xhr :post, :close_or_open_folder, opened_or_closed: @folder
+      end
+
+      it { assigns(:folder_id).should_not be_nil }
+    end
+
+    context "the folder is closed" do
+      before do
+        @folder << "opened"
+        xhr :post, :close_or_open_folder, opened_or_closed: @folder
+      end
+
+      it { assigns(:folder_id).should_not be_nil }
     end
   end
 end
