@@ -1,0 +1,9 @@
+<% if flash[:error].blank? %>
+  $('#bookmarks_table').html("<%= escape_javascript(render 'bookmarks_table',
+                                                  bookmarks: @bookmarks) %>");
+  $('#flash-errors').html("<%= escape_javascript(render 'shared/flash_errors') %>");
+  $('#link').val("");
+<% else %>
+  $('#flash-errors').html("<%= escape_javascript(render 'shared/flash_errors') %>");
+  $('#link').val("");
+<% end %>

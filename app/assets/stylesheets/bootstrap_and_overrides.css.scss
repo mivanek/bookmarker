@@ -1,6 +1,8 @@
 @import 'bootstrap';
-body { padding-top: 60px; }
 @import 'bootstrap-responsive';
+
+body { padding-top: 60px; }
+
 @mixin box_sizing {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -18,6 +20,109 @@ input {
   height: auto !important;
 }
 
-/*.url_field {*/
-  /*width: 89%;*/
-/*}*/
+.table-edit {
+  min-width: 90px;
+}
+
+.site-name {
+  max-width: 150px;
+}
+
+#error_explanation {
+  color: #f00
+  ul {
+    list-style: none;
+    margin: 0 0 18px 0;
+  }
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: $white;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+  hover {
+    color: $white;
+    text-decoration: none;
+  }
+}
+
+/* debug dump */
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box-sizing;
+}
+
+/* modal */
+
+.modal-body {
+  max-height: 800px;
+}
+
+.form-inline {
+  display: inline;
+}
+
+.foldered-bookmark > td:first-child {
+  padding-left: 20px !important;
+}
+
+.hovered-folder {
+  color: #F00;
+}
+
+.hidden {
+  display: none;
+}
+
+.folder-table-name {
+  width: 100%;
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #999;
+}
+
+footer a {
+  color: #555;
+}  
+
+footer a:hover { 
+  color: #222;
+}
+
+footer small {
+  float: left;
+}
+
+footer ul {
+  float: right;
+  list-style: none;
+}
+
+footer ul li {
+  float: left;
+  margin-left: 10px;
+}
+
+/* typography */
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}

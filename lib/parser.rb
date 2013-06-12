@@ -24,7 +24,7 @@ class ElementsParser
     end
 
     def get_site
-      @site = Nokogiri::HTML(open(url))
+      @site = Nokogiri::HTML(open(url, allow_redirections: :all))
     end
 
     def get_title

@@ -1,0 +1,21 @@
+%header.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    .container
+      = link_to "bookmarker beta", root_path, id: "logo"
+      %nav
+        %ul.nav.pull-right
+          - if signed_in? && current_user.demo
+            %li= link_to "Make this account permanent", signin_path
+          - if signed_in?
+            %li#fat-menu.dropdown
+              %a.dropdown-toggle{ href: "#", 'data-toggle' => "dropdown" }
+                = current_user.email
+                %b.caret
+              %ul.dropdown-menu
+                %li= link_to "Profile", edit_user_path(current_user)
+                %li.divider
+                %li= link_to "Sign out", signout_path, method: "delete"
+          - if !signed_in?
+            %li= link_to "Demo", create_demo_users_path, method: :post
+            %li= link_to "Sign in", signin_path
+            %li= link_to "Create an account", signup_path

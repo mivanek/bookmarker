@@ -1,25 +1,29 @@
 source 'https://rubygems.org'
+ruby "2.0.0"
 
 gem 'rails', '~> 3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'haml'
 gem 'bootstrap-sass'
 gem 'sanitize'
 gem 'jquery-tools'
+gem 'open_uri_redirections'
+gem 'bcrypt-ruby'
 
 group :development do
+  gem 'sqlite3'
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'pry-doc'
-  gem 'guard-spork'
-  gem 'spork-rails'
-  gem 'rb-inotify', '~> 0.9'
+end
+
+group :production do
+  gem 'pg'
 end
 
 group :test do
@@ -27,14 +31,19 @@ group :test do
   gem 'selenium-webdriver'
   gem 'capybara', "~> 2.1.0.beta1"
   gem 'factory_girl_rails'
-  gem 'guard-rspec'
   gem 'guard-cucumber'
   gem 'database_cleaner'
   gem 'cucumber-rails', :require => false
+  gem 'rb-inotify', '~> 0.9'
+  gem 'libnotify', '0.8.0'
 end
 
 group :development, :test do
+  gem 'guard-spork'
+  gem 'spork-rails'
   gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'jasmine'
 end
 
 
