@@ -18,7 +18,6 @@
 TODO.txt
 TODO.txtž
 .gitignore
-Gemfile.lock
 .rspec
 .ruby-gemset
 .ruby-version
