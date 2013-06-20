@@ -1,7 +1,0 @@
-cupat title iz linka mozda bolje nego iz titlea web sitea
-okreni poredark bookmarksa
-
-folderi: 
-    - pomaknut title <td> svakog bookmarka unutar foldera (cca 15-20 px)
-    - na svaki folder implementirat strelicu/folder ikonu
-    - stavit .condensed tablicu
